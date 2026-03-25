@@ -51,10 +51,10 @@
 
         /* PRODUCT GRID */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-        .product-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .product-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .product-card img { width: 100%; height: 180px; object-fit: contain; }
-        .product-card h3 { font-size: 0.85rem; margin: 12px 0; height: 40px; overflow: hidden; color: #444; text-transform: uppercase; }
+        .product-card h3 { font-size: 0.85rem; margin: 12px 0; height: 40px; overflow: hidden; color: #444; text-transform: uppercase; flex-grow: 1; }
         .product-card .price { color: var(--price-red); font-weight: 700; font-size: 1.1rem; }
 
         /* MODAL DETAIL */
@@ -72,11 +72,11 @@
         .specs-list li::before { content: '✓'; position: absolute; left: 0; color: #2ecc71; font-weight: 700; }
         .btn-buy-now { width: 100%; padding: 15px; background: var(--btn-orange); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 25px; }
 
-        /* PROJECTS MARQUEE (A:Mã, B:Tên, C:Hạng mục, D:Năm) */
+        /* PROJECTS MARQUEE */
         #projects { background: #111; color: #fff; max-width: 100%; padding: 60px 0; overflow: hidden; }
         .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; gap: 20px; }
         .proj-card { width: 350px; position: relative; border-radius: 15px; overflow: hidden; }
-        .proj-card img { width: 100%; height: 230px; object-fit: cover; display: block; filter: brightness(0.8); transition: 0.4s; }
+        .proj-card img { width: 100%; height: 230px; object-fit: cover; display: block; filter: brightness(0.7); transition: 0.4s; }
         .proj-card:hover img { filter: brightness(1); transform: scale(1.05); }
         .proj-info { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px; }
         .proj-info h4 { font-size: 1.1rem; margin-bottom: 5px; color: #fff; }
@@ -225,27 +225,29 @@
                 });
                 renderProducts(products);
 
-                // 3. DỰ ÁN (A:Mã, B:Tên, C:Hạng mục, D:Năm)
+                // 3. DỰ ÁN (A: Mã dự án, B: Tên, C: Hạng mục, D: Năm)
                 const resD = await fetch(`${base}&sheet=Du_An`);
                 const projRows = JSON.parse((await resD.text()).substring(47).slice(0, -2)).table.rows;
                 let projHTML = '';
+                
                 projRows.slice(1).forEach(r => {
-                    if(!r.c[0]) return; // Bỏ qua nếu không có mã
-                    const maDA = r.c[0].v;
-                    const tenDA = r.c[1] ? r.c[1].v : '';
-                    const hangMuc = r.c[2] ? r.c[2].v : '';
-                    const nam = r.c[3] ? r.c[3].v : '';
+                    if(!r.c || !r.c[0]) return; // Nếu không có mã dự án ở cột A
+                    
+                    const maDA = r.c[0].v.toString().trim(); // Cột A
+                    const tenDA = r.c[1] ? r.c[1].v : '';     // Cột B
+                    const hangMuc = r.c[2] ? r.c[2].v : '';   // Cột C
+                    const nam = r.c[3] ? r.c[3].v : '';       // Cột D
                     
                     projHTML += `
                         <div class="proj-card">
-                            <img src="${imgBase}${maDA}.jpg" onerror="this.src='https://via.placeholder.com/400x300?text=${maDA}'">
+                            <img src="${imgBase}${maDA}.jpg" onerror="this.src='https://via.placeholder.com/400x230?text=${maDA}'">
                             <div class="proj-info">
                                 <h4>${tenDA}</h4>
                                 <p>${hangMuc} | ${nam}</p>
                             </div>
                         </div>`;
                 });
-                document.getElementById('project-list').innerHTML = projHTML + projHTML; // Nhân đôi để chạy vô tận
+                document.getElementById('project-list').innerHTML = projHTML + projHTML;
 
                 // SLIDER AUTO
                 setInterval(() => {
@@ -260,7 +262,7 @@
         function renderProducts(data) {
             document.getElementById('product-grid').innerHTML = data.map(p => `
                 <div class="product-card" onclick="openModal('${p.ma}')">
-                    <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/200'">
+                    <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/250x180?text=${p.ma}'">
                     <h3>${p.ten}</h3>
                     <div class="price">${p.gia}</div>
                 </div>
