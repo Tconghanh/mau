@@ -3,64 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Đang tải...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb; --dark: #1e293b; --light: #f8fafc; --accent: #f59e0b;
+            --primary: #c0392b; --dark: #2c3e50; --light: #f9f9f9; --accent: #f39c12;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; color: #334155; line-height: 1.6; background: #fff; }
+        body { font-family: 'Quicksand', sans-serif; color: #333; line-height: 1.6; scroll-behavior: smooth; }
         
-        /* Header */
-        header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
-        nav { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; padding: 15px 20px; align-items: center; }
-        nav ul { display: flex; list-style: none; gap: 20px; }
-        nav a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.9rem; }
+        /* Header & Logo */
+        header { background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); box-shadow: 0 2px 15px rgba(0,0,0,0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        nav { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; padding: 10px 20px; align-items: center; }
+        .logo-img { height: 50px; width: auto; object-fit: contain; }
+        nav ul { display: flex; list-style: none; gap: 25px; }
+        nav a { text-decoration: none; color: var(--dark); font-weight: 700; transition: 0.3s; text-transform: uppercase; font-size: 0.85rem; }
+        nav a:hover { color: var(--primary); }
 
-        section { padding: 80px 20px; max-width: 1200px; margin: auto; }
-        .title { font-size: 2.5rem; margin-bottom: 20px; text-align: center; color: var(--dark); }
+        /* Tiêu đề phần nổi bật */
+        section { padding: 100px 20px; max-width: 1200px; margin: auto; }
+        .section-header { text-align: center; margin-bottom: 50px; position: relative; }
+        .section-header h2 { font-size: 2.5rem; color: var(--dark); text-transform: uppercase; position: relative; display: inline-block; padding-bottom: 15px; }
+        .section-header h2::after { content: ''; position: absolute; width: 60%; height: 4px; background: var(--primary); bottom: 0; left: 20%; border-radius: 2px; }
 
         /* Intro & Process */
-        #intro { background: var(--light); max-width: 100%; border-bottom: 1px solid #e2e8f0; }
-        .content-text { max-width: 800px; margin: auto; text-align: center; font-size: 1.1rem; }
+        #intro { background: var(--light); max-width: 100%; }
+        .content-box { max-width: 900px; margin: auto; text-align: center; font-size: 1.2rem; color: #555; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 
-        /* Products */
-        .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
-        .card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; transition: 0.3s; position: relative; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .img-box { width: 100%; height: 250px; background: #f1f5f9; position: relative; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .badge-list { position: absolute; top: 10px; left: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
-        .badge { background: var(--primary); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; }
-        .card-info { padding: 20px; }
-        .card-price { color: #e11d48; font-weight: 700; font-size: 1.2rem; margin: 10px 0; }
+        /* Product Grid */
+        .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; transition: 0.4s; border: 1px solid #eee; cursor: pointer; position: relative; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .img-container { width: 100%; height: 250px; background: #f0f0f0; overflow: hidden; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .card:hover .img-container img { scale: 1.1; }
+        .card-body { padding: 20px; }
+        .price { color: var(--primary); font-weight: 700; font-size: 1.3rem; margin-top: 10px; }
+        .tag-list { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+        .tag { background: #ebedef; color: #555; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
 
-        /* Projects - Marquee Effect */
-        #projects { overflow: hidden; background: var(--dark); color: white; max-width: 100%; padding: 60px 0; }
-        .marquee-container { display: flex; overflow: hidden; user-select: none; gap: 20px; }
-        .marquee-content { flex-shrink: 0; display: flex; gap: 20px; counter-reset: item; animation: scroll 30s linear infinite; }
-        .proj-item { width: 350px; position: relative; border-radius: 10px; overflow: hidden; }
-        .proj-item img { width: 100%; height: 200px; object-fit: cover; display: block; border-radius: 10px; }
-        .proj-desc { position: absolute; bottom: 0; background: rgba(0,0,0,0.7); width: 100%; padding: 10px; font-size: 0.8rem; }
+        /* Modal Sản phẩm */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 900px; max-height: 90vh; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; z-index: 10; color: #333; }
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 30px; overflow-y: auto; }
+        .album-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .album-grid img { width: 100%; border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
+        .album-grid img:hover { border-color: var(--primary); }
+
+        /* Projects Marquee */
+        #projects { background: #1a1a1a; color: white; max-width: 100%; padding: 80px 0; overflow: hidden; }
+        .marquee { display: flex; width: 200%; animation: scroll 40s linear infinite; gap: 20px; }
+        .proj-card { width: 350px; flex-shrink: 0; position: relative; border-radius: 15px; overflow: hidden; }
+        .proj-card img { width: 100%; height: 230px; object-fit: cover; filter: grayscale(30%); transition: 0.4s; }
+        .proj-card:hover img { filter: grayscale(0%); scale: 1.05; }
+        .proj-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); }
 
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* Footer */
-        footer { background: #0f172a; color: #94a3b8; padding: 60px 20px; }
-        .footer-grid { max-width: 1200px; margin: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .footer-col h4 { color: white; margin-bottom: 20px; }
+        footer { background: #2c3e50; color: #bdc3c7; padding: 80px 20px 30px; }
+        .footer-grid { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; }
+        .footer-logo { height: 60px; margin-bottom: 20px; filter: brightness(1.2); }
+        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 1.2rem; text-transform: uppercase; border-left: 4px solid var(--primary); padding-left: 15px; }
 
-        #loader { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+        #loader { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { width: 50px; height: 50px; border: 5px solid #eee; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .footer-grid, .modal-body { grid-template-columns: 1fr; }
+            nav ul { display: none; }
+            .section-header h2 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">ĐANG TẢI DỮ LIỆU...</div>
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Đang tải dữ liệu...</p>
+    </div>
 
     <header>
         <nav>
-            <div id="web-title" style="font-weight: 700; color: var(--primary);">BRAND</div>
+            <a href="#"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" class="logo-img" alt="Logo"></a>
             <ul>
                 <li><a href="#intro">Giới thiệu</a></li>
                 <li><a href="#products">Sản phẩm</a></li>
@@ -71,52 +98,66 @@
     </header>
 
     <section id="intro">
-        <h1 class="title">Giới thiệu</h1>
-        <div id="intro-text" class="content-text"></div>
+        <div class="section-header"><h2>Giới thiệu</h2></div>
+        <div id="intro-text" class="content-box"></div>
     </section>
 
     <section id="process">
-        <h2 class="title">Quy trình làm việc</h2>
-        <div id="process-text" class="content-text"></div>
+        <div class="section-header"><h2>Quy trình thực hiện</h2></div>
+        <div id="process-text" class="content-box" style="background: var(--light);"></div>
     </section>
 
     <section id="products">
-        <h2 class="title">Sản phẩm nổi bật</h2>
+        <div class="section-header"><h2>Sản phẩm của chúng tôi</h2></div>
         <div id="product-list" class="grid-products"></div>
     </section>
 
     <section id="projects">
-        <h2 class="title" style="color: white;">Dự án tiêu biểu</h2>
-        <div class="marquee-container">
-            <div id="project-list" class="marquee-content"></div>
-        </div>
+        <div class="section-header"><h2 style="color: white;">Dự án đã triển khai</h2></div>
+        <div class="marquee" id="project-list"></div>
     </section>
+
+    <!-- Popup Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <div id="modal-images" class="album-grid"></div>
+                <div class="modal-info">
+                    <h2 id="modal-title" style="margin-bottom: 15px; color: var(--dark);"></h2>
+                    <div id="modal-price" class="price" style="margin-bottom: 20px;"></div>
+                    <div id="modal-desc" style="white-space: pre-line; color: #666;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer id="footer">
         <div class="footer-grid">
-            <div class="footer-col"><h4>Thông tin</h4><div id="f1"></div></div>
+            <div class="footer-col">
+                <img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" class="footer-logo">
+                <div id="f1"></div>
+            </div>
             <div class="footer-col"><h4>Địa chỉ</h4><div id="f2"></div></div>
-            <div class="footer-col"><h4>Hỗ trợ</h4><div id="f3"></div></div>
+            <div class="footer-col"><h4>Hỗ trợ khách hàng</h4><div id="f3"></div></div>
         </div>
+        <p style="text-align:center; margin-top: 50px; font-size: 0.8rem;">© 2024 Powered by tconghanh. All rights reserved.</p>
     </footer>
 
     <script>
         const sheetId = '1knLdhA1j69Qqfa6nMIe20vfufQnvGr4THpehnK0mHPk';
-        const githubUser = 'TEN_CUA_BAN'; // <--- THAY TÊN GITHUB CỦA BẠN
-        const githubRepo = 'TEN_REPO';    // <--- THAY TÊN REPO CỦA BẠN
-        const imgBase = `https://raw.githubusercontent.com/${githubUser}/${githubRepo}/main/Data/`;
-
+        const imgBase = `https://raw.githubusercontent.com/tconghanh/mau/main/Data/`;
         const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+        let allProducts = [];
 
         async function init() {
             try {
                 // 1. Load Trang Chủ
                 const resHome = await fetch(`${base}&sheet=Trang_Chu`);
-                const homeJson = JSON.parse((await resHome.text()).substring(47).slice(0, -2));
-                const homeData = homeJson.table.rows;
+                const homeData = JSON.parse((await resHome.text()).substring(47).slice(0, -2)).table.rows;
                 
                 document.title = homeData[1].c[1].v;
-                document.getElementById('web-title').innerText = homeData[1].c[1].v;
                 document.getElementById('intro-text').innerText = homeData[2].c[1].v;
                 document.getElementById('process-text').innerText = homeData[3].c[1].v;
                 document.getElementById('f1').innerText = homeData[4].c[1].v;
@@ -125,68 +166,87 @@
 
                 // 2. Load Sản Phẩm
                 const resProd = await fetch(`${base}&sheet=San_Pham`);
-                const prodJson = JSON.parse((await resProd.text()).substring(47).slice(0, -2));
-                const prodData = prodJson.table.rows;
+                const prodRows = JSON.parse((await resProd.text()).substring(47).slice(0, -2)).table.rows;
                 let prodHTML = '';
 
-                for(let i=1; i < prodData.length; i++) {
-                    const r = prodData[i].c;
-                    if(!r[1]) continue;
+                for(let i=1; i < prodRows.length; i++) {
+                    const r = prodRows[i].c;
+                    if(!r || !r[1]) continue;
                     
-                    const maSP = r[1].v;
-                    const tenSP = r[2].v;
-                    const gia = r[3] ? r[3].v.toLocaleString() + 'đ' : 'Liên hệ';
-                    const dMuc = r[4] ? r[4].v.split(';') : [];
-                    const moTa = r[5] ? r[5].v : '';
-
-                    let badges = dMuc.map(m => `<span class="badge">${m.trim()}</span>`).join('');
+                    const p = {
+                        ma: r[1].v,
+                        ten: r[2].v,
+                        gia: r[3] ? r[3].v.toLocaleString() + 'đ' : 'Liên hệ',
+                        tags: r[4] ? r[4].v.split(';') : [],
+                        mota: r[5] ? r[5].v : 'Đang cập nhật nội dung...'
+                    };
+                    allProducts.push(p);
 
                     prodHTML += `
-                        <div class="card">
-                            <div class="img-box">
-                                <div class="badge-list">${badges}</div>
-                                <img src="${imgBase}${maSP}.jpg" onerror="this.src='https://via.placeholder.com/300x250?text=No+Image'">
+                        <div class="card" onclick="openModal('${p.ma}')">
+                            <div class="img-container">
+                                <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/300x250?text=Sản+Phẩm'">
                             </div>
-                            <div class="card-info">
-                                <h3>${tenSP}</h3>
-                                <p style="font-size:0.8rem; color:#64748b">${moTa}</p>
-                                <div class="card-price">${gia}</div>
+                            <div class="card-body">
+                                <div class="tag-list">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                                <h4>${p.ten}</h4>
+                                <div class="price">${p.gia}</div>
                             </div>
                         </div>`;
                 }
                 document.getElementById('product-list').innerHTML = prodHTML;
 
-                // 3. Load Dự Án (Marquee)
+                // 3. Load Dự Án
                 const resProj = await fetch(`${base}&sheet=Du_An`);
-                const projJson = JSON.parse((await resProj.text()).substring(47).slice(0, -2));
-                const projData = projJson.table.rows;
+                const projRows = JSON.parse((await resProj.text()).substring(47).slice(0, -2)).table.rows;
                 let projHTML = '';
 
-                // Lặp x2 để hiệu ứng chạy mượt (vòng lặp vô tận)
-                const renderProj = () => {
-                    let html = '';
-                    for(let i=1; i < projData.length; i++) {
-                        const r = projData[i].c;
-                        if(!r[1]) continue;
-                        html += `
-                            <div class="proj-item">
-                                <img src="${r[2].v}">
-                                <div class="proj-desc">
-                                    <strong>${r[1].v}</strong><br>${r[3] ? r[3].v : ''}
-                                </div>
-                            </div>`;
-                    }
-                    return html;
-                };
-
-                const content = renderProj();
-                document.getElementById('project-list').innerHTML = content + content; // Nhân đôi để lặp lại
+                for(let i=1; i < projRows.length; i++) {
+                    const r = projRows[i].c;
+                    if(!r || !r[1]) continue;
+                    const maDA = r[1].v;
+                    projHTML += `
+                        <div class="proj-card">
+                            <img src="${imgBase}${maDA}.jpg" onerror="this.src='https://via.placeholder.com/400x300?text=Công+Trình'">
+                            <div class="proj-info">
+                                <h4 style="margin:0">${r[2].v}</h4>
+                                <small>${r[3] ? r[3].v : ''}</small>
+                            </div>
+                        </div>`;
+                }
+                document.getElementById('project-list').innerHTML = projHTML + projHTML; // X2 để lặp mượt
 
                 document.getElementById('loader').style.display = 'none';
             } catch (e) {
                 console.error(e);
-                document.getElementById('loader').innerText = "Lỗi tải dữ liệu. Hãy kiểm tra Sheet/Cấu trúc.";
             }
+        }
+
+        function openModal(ma) {
+            const p = allProducts.find(x => x.ma === ma);
+            if(!p) return;
+
+            document.getElementById('modal-title').innerText = p.ten;
+            document.getElementById('modal-price').innerText = p.gia;
+            document.getElementById('modal-desc').innerText = p.mota;
+            
+            // Album ảnh: Chính + 3 ảnh phụ
+            let albumHTML = `<img src="${imgBase}${p.ma}.jpg" onclick="window.open(this.src)">`;
+            [1, 2, 3].forEach(n => {
+                const s = `${imgBase}${p.ma}.${n}.jpg`;
+                albumHTML += `<img src="${s}" onerror="this.style.display='none'" onclick="window.open(this.src)">`;
+            });
+            
+            document.getElementById('modal-images').innerHTML = albumHTML;
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('productModal')) closeModal();
         }
 
         init();
