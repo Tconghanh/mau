@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đang tải dữ liệu...</title>
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tconghanh/mau/main/Data/favicon.ico">
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -27,7 +31,7 @@
         nav a { text-decoration: none; color: var(--dark-gray); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; }
         nav a:hover { color: var(--primary-blue); }
 
-        /* SLIDER */
+        /* SLIDER BANNER */
         .slider-container { width: 100%; height: 450px; margin-top: 70px; overflow: hidden; position: relative; }
         .slider { display: flex; width: 500%; height: 100%; transition: transform 0.8s ease-in-out; }
         .slide { width: 20%; height: 100%; }
@@ -36,55 +40,59 @@
         /* SECTIONS */
         section { padding: 60px 20px; max-width: 1300px; margin: auto; }
         .section-title { text-align: center; margin-bottom: 30px; }
-        .section-title h2 { font-size: 2rem; color: var(--primary-blue); font-style: italic; text-transform: uppercase; }
-        .underline { width: 60px; height: 4px; background: var(--btn-orange); margin: 8px auto; }
-        .content-box { max-width: 900px; margin: auto; text-align: center; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .section-title h2 { font-size: 2.2rem; color: var(--primary-blue); font-style: italic; text-transform: uppercase; }
+        .underline { width: 70px; height: 4px; background: var(--btn-orange); margin: 10px auto; }
+        .content-box { max-width: 900px; margin: auto; text-align: center; background: #fff; padding: 35px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
 
-        /* FILTER (LẤY TỪ CỘT C) */
+        /* PRODUCT FILTER */
         .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
         .filter-btn { padding: 8px 18px; border: 1px solid #ddd; background: #fff; border-radius: 20px; cursor: pointer; font-weight: 700; font-size: 0.75rem; transition: 0.3s; text-transform: uppercase; }
         .filter-btn.active, .filter-btn:hover { background: var(--primary-blue); color: #fff; border-color: var(--primary-blue); }
 
         /* PRODUCT GRID */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .product-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+        .product-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .product-card img { width: 100%; height: 180px; object-fit: contain; }
-        .product-card h3 { font-size: 0.85rem; margin: 12px 0; height: 40px; overflow: hidden; color: #444; }
+        .product-card h3 { font-size: 0.85rem; margin: 12px 0; height: 40px; overflow: hidden; color: #444; text-transform: uppercase; }
         .product-card .price { color: var(--price-red); font-weight: 700; font-size: 1.1rem; }
 
         /* MODAL DETAIL */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 15px; backdrop-filter: blur(4px); }
-        .modal-content { background: #fff; width: 100%; max-width: 950px; border-radius: 25px; display: grid; grid-template-columns: 45% 55%; position: relative; overflow: hidden; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #999; cursor: pointer; z-index: 10; }
+        .modal-content { background: #fff; width: 100%; max-width: 950px; border-radius: 25px; display: grid; grid-template-columns: 45% 55%; position: relative; overflow: hidden; animation: zoomIn 0.3s; }
+        @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: #999; cursor: pointer; z-index: 10; }
         .modal-left { padding: 25px; border-right: 1px solid #f0f0f0; background: #fff; }
         .modal-right { padding: 35px; overflow-y: auto; max-height: 85vh; }
         #main-preview { width: 100%; height: 320px; object-fit: contain; margin-bottom: 20px; }
         .thumbs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
         .thumbs img { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 6px; cursor: pointer; object-fit: cover; }
         .specs-list { list-style: none; margin-top: 15px; }
-        .specs-list li { position: relative; padding-left: 22px; margin-bottom: 6px; font-size: 0.9rem; color: #555; }
+        .specs-list li { position: relative; padding-left: 22px; margin-bottom: 7px; font-size: 0.9rem; color: #555; }
         .specs-list li::before { content: '✓'; position: absolute; left: 0; color: #2ecc71; font-weight: 700; }
-        .btn-buy-now { width: 100%; padding: 15px; background: var(--btn-orange); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 20px; }
+        .btn-buy-now { width: 100%; padding: 15px; background: var(--btn-orange); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 25px; }
 
-        /* PROJECTS */
-        #projects { background: #111; color: #fff; max-width: 100%; padding: 50px 0; overflow: hidden; }
-        .marquee { display: flex; width: max-content; animation: scroll 35s linear infinite; gap: 20px; }
-        .proj-card { width: 320px; position: relative; border-radius: 12px; overflow: hidden; }
-        .proj-card img { width: 100%; height: 210px; object-fit: cover; display: block; }
-        .proj-name { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); padding: 8px 12px; font-size: 0.85rem; }
+        /* PROJECTS MARQUEE (A:Mã, B:Tên, C:Hạng mục, D:Năm) */
+        #projects { background: #111; color: #fff; max-width: 100%; padding: 60px 0; overflow: hidden; }
+        .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; gap: 20px; }
+        .proj-card { width: 350px; position: relative; border-radius: 15px; overflow: hidden; }
+        .proj-card img { width: 100%; height: 230px; object-fit: cover; display: block; filter: brightness(0.8); transition: 0.4s; }
+        .proj-card:hover img { filter: brightness(1); transform: scale(1.05); }
+        .proj-info { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px; }
+        .proj-info h4 { font-size: 1.1rem; margin-bottom: 5px; color: #fff; }
+        .proj-info p { font-size: 0.75rem; color: #ccc; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* FOOTER */
-        footer { background: #1a252f; color: #bdc3c7; padding: 50px 20px; }
-        .footer-grid { max-width: 1300px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 30px; }
-        .footer-logo { height: 55px; margin-bottom: 15px; }
+        footer { background: #1a252f; color: #bdc3c7; padding: 60px 20px; }
+        .footer-grid { max-width: 1300px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+        .footer-logo { height: 60px; margin-bottom: 20px; }
 
-        #loader { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; font-weight: 700; color: var(--primary-blue); }
+        #loader { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; font-weight: 700; color: var(--primary-blue); font-size: 1.2rem; }
 
         @media (max-width: 850px) {
             .modal-content { grid-template-columns: 1fr; }
-            .slider-container { height: 220px; }
+            .slider-container { height: 250px; }
             .footer-grid { grid-template-columns: 1fr; }
             nav ul { display: none; }
         }
@@ -131,17 +139,14 @@
 
     <section id="products">
         <div class="section-title"><h2>Sản phẩm tiêu biểu</h2><div class="underline"></div></div>
-        
-        <!-- Filter Box lấy dữ liệu từ Cột C -->
         <div class="filter-container" id="filter-box">
             <button class="filter-btn active" onclick="filterProducts('TẤT CẢ', this)">TẤT CẢ</button>
         </div>
-
         <div class="product-grid" id="product-grid"></div>
     </section>
 
     <section id="projects">
-        <div class="section-title"><h2 style="color:#fff">Dự án tiêu biểu</h2><div class="underline"></div></div>
+        <div class="section-title"><h2 style="color:#fff">Dự án đã triển khai</h2><div class="underline"></div></div>
         <div class="marquee" id="project-list"></div>
     </section>
 
@@ -196,19 +201,18 @@
                 document.getElementById('f2').innerText = home[5].c[1].v;
                 document.getElementById('f3').innerText = home[6].c[1].v;
 
-                // 2. SẢN PHẨM (Dữ liệu từ cột C là Danh Mục)
+                // 2. SẢN PHẨM (A:Mã, B:Tên, C:Danh mục, D:Giá, E:Mô tả)
                 const resP = await fetch(`${base}&sheet=San_Pham`);
                 const prodRows = JSON.parse((await resP.text()).substring(47).slice(0, -2)).table.rows;
-                
                 products = prodRows.slice(1).map(r => ({
-                    ma: r.c[0] ? r.c[0].v.toString().trim() : '',     // Cột A: Mã
-                    ten: r.c[1] ? r.c[1].v : '',                       // Cột B: Tên
-                    cats: r.c[2] ? r.c[2].v.split(';').map(s => s.trim()) : [], // Cột C: DANH MỤC
-                    gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ', // Cột D: Giá
-                    mota: r.c[4] ? r.c[4].v : ''                      // Cột E: Mô tả
+                    ma: r.c[0] ? r.c[0].v.toString().trim() : '',
+                    ten: r.c[1] ? r.c[1].v : '',
+                    cats: r.c[2] ? r.c[2].v.split(';').map(s => s.trim()) : [],
+                    gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ',
+                    mota: r.c[4] ? r.c[4].v : ''
                 })).filter(x => x.ma !== '');
 
-                // Tự động tạo nút lọc từ dữ liệu Cột C
+                // Tạo bộ lọc sản phẩm tự động từ Cột C
                 const categories = new Set();
                 products.forEach(p => p.cats.forEach(c => categories.add(c)));
                 const filterBox = document.getElementById('filter-box');
@@ -219,17 +223,29 @@
                     btn.onclick = () => filterProducts(c, btn);
                     filterBox.appendChild(btn);
                 });
-
                 renderProducts(products);
 
-                // 3. DỰ ÁN
+                // 3. DỰ ÁN (A:Mã, B:Tên, C:Hạng mục, D:Năm)
                 const resD = await fetch(`${base}&sheet=Du_An`);
                 const projRows = JSON.parse((await resD.text()).substring(47).slice(0, -2)).table.rows;
                 let projHTML = '';
                 projRows.slice(1).forEach(r => {
-                    if(r.c[1]) projHTML += `<div class="proj-card"><img src="${imgBase}${r.c[1].v}.jpg"><div class="proj-name">${r.c[2].v}</div></div>`;
+                    if(!r.c[0]) return; // Bỏ qua nếu không có mã
+                    const maDA = r.c[0].v;
+                    const tenDA = r.c[1] ? r.c[1].v : '';
+                    const hangMuc = r.c[2] ? r.c[2].v : '';
+                    const nam = r.c[3] ? r.c[3].v : '';
+                    
+                    projHTML += `
+                        <div class="proj-card">
+                            <img src="${imgBase}${maDA}.jpg" onerror="this.src='https://via.placeholder.com/400x300?text=${maDA}'">
+                            <div class="proj-info">
+                                <h4>${tenDA}</h4>
+                                <p>${hangMuc} | ${nam}</p>
+                            </div>
+                        </div>`;
                 });
-                document.getElementById('project-list').innerHTML = projHTML + projHTML;
+                document.getElementById('project-list').innerHTML = projHTML + projHTML; // Nhân đôi để chạy vô tận
 
                 // SLIDER AUTO
                 setInterval(() => {
@@ -238,7 +254,7 @@
                 }, 4000);
 
                 document.getElementById('loader').style.display = 'none';
-            } catch (e) { console.error("Lỗi:", e); }
+            } catch (e) { console.error("Lỗi khởi tạo:", e); }
         }
 
         function renderProducts(data) {
