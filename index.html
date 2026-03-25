@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đang tải...</title>
+    <!-- 1. Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tconghanh/mau/main/Data/favicon.ico">
+    
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,7 +15,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Quicksand', sans-serif; color: #333; line-height: 1.6; scroll-behavior: smooth; }
         
-        /* Header & Logo */
+        /* Header */
         header { background: rgba(255,255,255,0.95); backdrop-filter: blur(5px); box-shadow: 0 2px 15px rgba(0,0,0,0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
         nav { max-width: 1200px; margin: auto; display: flex; justify-content: space-between; padding: 10px 20px; align-items: center; }
         .logo-img { height: 50px; width: auto; object-fit: contain; }
@@ -20,76 +23,72 @@
         nav a { text-decoration: none; color: var(--dark); font-weight: 700; transition: 0.3s; text-transform: uppercase; font-size: 0.85rem; }
         nav a:hover { color: var(--primary); }
 
-        /* Tiêu đề phần nổi bật */
-        section { padding: 100px 20px; max-width: 1200px; margin: auto; }
-        .section-header { text-align: center; margin-bottom: 50px; position: relative; }
-        .section-header h2 { font-size: 2.5rem; color: var(--dark); text-transform: uppercase; position: relative; display: inline-block; padding-bottom: 15px; }
+        /* 2. Slide Styles */
+        .slider-container { width: 100%; height: 500px; margin-top: 70px; overflow: hidden; position: relative; }
+        .slider { display: flex; width: 500%; height: 100%; transition: transform 0.8s ease-in-out; }
+        .slide { width: 20%; height: 100%; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Section Titles */
+        section { padding: 80px 20px; max-width: 1200px; margin: auto; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h2 { font-size: 2.2rem; color: var(--dark); text-transform: uppercase; position: relative; display: inline-block; padding-bottom: 15px; }
         .section-header h2::after { content: ''; position: absolute; width: 60%; height: 4px; background: var(--primary); bottom: 0; left: 20%; border-radius: 2px; }
 
-        /* Intro & Process */
-        #intro { background: var(--light); max-width: 100%; }
-        .content-box { max-width: 900px; margin: auto; text-align: center; font-size: 1.2rem; color: #555; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        /* Content Boxes */
+        .content-box { max-width: 900px; margin: auto; text-align: center; font-size: 1.1rem; color: #555; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 
-        /* Product Grid */
+        /* Products */
         .grid-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-        .card { background: white; border-radius: 15px; overflow: hidden; transition: 0.4s; border: 1px solid #eee; cursor: pointer; position: relative; }
+        .card { background: white; border-radius: 15px; overflow: hidden; transition: 0.4s; border: 1px solid #eee; cursor: pointer; }
         .card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .img-container { width: 100%; height: 250px; background: #f0f0f0; overflow: hidden; }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .card:hover .img-container img { scale: 1.1; }
+        .img-container { width: 100%; height: 250px; background: #f0f0f0; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; }
         .card-body { padding: 20px; }
-        .price { color: var(--primary); font-weight: 700; font-size: 1.3rem; margin-top: 10px; }
-        .tag-list { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
-        .tag { background: #ebedef; color: #555; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+        .price { color: var(--primary); font-weight: 700; font-size: 1.2rem; margin-top: 10px; }
+        .tag { background: #ebedef; color: #555; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; margin-right: 5px; font-weight: 600; }
 
-        /* Modal Sản phẩm */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: white; width: 100%; max-width: 900px; max-height: 90vh; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; z-index: 10; color: #333; }
-        .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 30px; overflow-y: auto; }
-        .album-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .album-grid img { width: 100%; border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
+        /* Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 900px; max-height: 90vh; border-radius: 20px; position: relative; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; z-index: 10; }
+        .modal-left { padding: 20px; background: #f8f9fa; overflow-y: auto; }
+        .modal-right { padding: 30px; overflow-y: auto; }
+        .album-grid img { width: 100%; border-radius: 10px; margin-bottom: 10px; cursor: pointer; border: 2px solid transparent; }
         .album-grid img:hover { border-color: var(--primary); }
 
         /* Projects Marquee */
-        #projects { background: #1a1a1a; color: white; max-width: 100%; padding: 80px 0; overflow: hidden; }
-        .marquee { display: flex; width: 200%; animation: scroll 40s linear infinite; gap: 20px; }
-        .proj-card { width: 350px; flex-shrink: 0; position: relative; border-radius: 15px; overflow: hidden; }
-        .proj-card img { width: 100%; height: 230px; object-fit: cover; filter: grayscale(30%); transition: 0.4s; }
-        .proj-card:hover img { filter: grayscale(0%); scale: 1.05; }
-        .proj-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); }
-
+        #projects { background: #1a1a1a; color: white; max-width: 100%; padding: 60px 0; overflow: hidden; }
+        .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; gap: 20px; }
+        .proj-card { width: 350px; position: relative; border-radius: 15px; overflow: hidden; }
+        .proj-card img { width: 100%; height: 230px; object-fit: cover; }
+        
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* Footer */
-        footer { background: #2c3e50; color: #bdc3c7; padding: 80px 20px 30px; }
-        .footer-grid { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 50px; }
-        .footer-logo { height: 60px; margin-bottom: 20px; filter: brightness(1.2); }
-        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 1.2rem; text-transform: uppercase; border-left: 4px solid var(--primary); padding-left: 15px; }
+        footer { background: #2c3e50; color: #bdc3c7; padding: 60px 20px; }
+        .footer-grid { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+        .footer-logo { height: 50px; margin-bottom: 20px; filter: brightness(1.2); }
 
         #loader { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .spinner { width: 50px; height: 50px; border: 5px solid #eee; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
+        
         @media (max-width: 768px) {
-            .footer-grid, .modal-body { grid-template-columns: 1fr; }
+            .footer-grid, .modal-content { grid-template-columns: 1fr; }
+            .slider-container { height: 250px; }
             nav ul { display: none; }
-            .section-header h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="spinner"></div>
-        <p>Đang tải dữ liệu...</p>
-    </div>
+    <div id="loader"><h3>ĐANG TẢI DỮ LIỆU...</h3></div>
 
     <header>
         <nav>
             <a href="#"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" class="logo-img" alt="Logo"></a>
             <ul>
                 <li><a href="#intro">Giới thiệu</a></li>
+                <li><a href="#activity">Lĩnh vực hoạt động</a></li>
                 <li><a href="#products">Sản phẩm</a></li>
                 <li><a href="#projects">Dự án</a></li>
                 <li><a href="#footer">Liên hệ</a></li>
@@ -97,37 +96,50 @@
         </nav>
     </header>
 
+    <!-- 2. Slide Banner -->
+    <div class="slider-container">
+        <div class="slider" id="main-slider">
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL1.jpg" onerror="this.src='https://via.placeholder.com/1200x500?text=Slide+1'"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL2.jpg" onerror="this.src='https://via.placeholder.com/1200x500?text=Slide+2'"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL3.jpg" onerror="this.src='https://via.placeholder.com/1200x500?text=Slide+3'"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL4.jpg" onerror="this.src='https://via.placeholder.com/1200x500?text=Slide+4'"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL5.jpg" onerror="this.src='https://via.placeholder.com/1200x500?text=Slide+5'"></div>
+        </div>
+    </div>
+
     <section id="intro">
         <div class="section-header"><h2>Giới thiệu</h2></div>
         <div id="intro-text" class="content-box"></div>
     </section>
 
-    <section id="process">
-        <div class="section-header"><h2>Quy trình thực hiện</h2></div>
-        <div id="process-text" class="content-box" style="background: var(--light);"></div>
+    <!-- 3. Lĩnh vực hoạt động -->
+    <section id="activity" style="background: var(--light); max-width: 100%;">
+        <div style="max-width: 1200px; margin: auto;">
+            <div class="section-header"><h2>Lĩnh vực hoạt động</h2></div>
+            <div id="activity-text" class="content-box"></div>
+        </div>
     </section>
 
     <section id="products">
-        <div class="section-header"><h2>Sản phẩm của chúng tôi</h2></div>
+        <div class="section-header"><h2>Sản phẩm nổi bật</h2></div>
         <div id="product-list" class="grid-products"></div>
     </section>
 
     <section id="projects">
-        <div class="section-header"><h2 style="color: white;">Dự án đã triển khai</h2></div>
+        <div class="section-header"><h2 style="color: white;">Dự án tiêu biểu</h2></div>
         <div class="marquee" id="project-list"></div>
     </section>
 
-    <!-- Popup Modal -->
     <div id="productModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">&times;</span>
-            <div class="modal-body">
+            <div class="modal-left">
                 <div id="modal-images" class="album-grid"></div>
-                <div class="modal-info">
-                    <h2 id="modal-title" style="margin-bottom: 15px; color: var(--dark);"></h2>
-                    <div id="modal-price" class="price" style="margin-bottom: 20px;"></div>
-                    <div id="modal-desc" style="white-space: pre-line; color: #666;"></div>
-                </div>
+            </div>
+            <div class="modal-right">
+                <h2 id="modal-title" style="margin-bottom: 10px;"></h2>
+                <div id="modal-price" class="price" style="margin-bottom: 20px;"></div>
+                <div id="modal-desc" style="white-space: pre-line; color: #555;"></div>
             </div>
         </div>
     </div>
@@ -139,9 +151,8 @@
                 <div id="f1"></div>
             </div>
             <div class="footer-col"><h4>Địa chỉ</h4><div id="f2"></div></div>
-            <div class="footer-col"><h4>Hỗ trợ khách hàng</h4><div id="f3"></div></div>
+            <div class="footer-col"><h4>Hỗ trợ</h4><div id="f3"></div></div>
         </div>
-        <p style="text-align:center; margin-top: 50px; font-size: 0.8rem;">© 2024 Powered by tconghanh. All rights reserved.</p>
     </footer>
 
     <script>
@@ -150,104 +161,101 @@
         const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
         let allProducts = [];
+        let slideIndex = 0;
+
+        // Slide Animation
+        function startSlider() {
+            const slider = document.getElementById('main-slider');
+            setInterval(() => {
+                slideIndex = (slideIndex + 1) % 5;
+                slider.style.transform = `translateX(-${slideIndex * 20}%)`;
+            }, 4000);
+        }
 
         async function init() {
             try {
-                // 1. Load Trang Chủ
+                // 1. Trang Chu
                 const resHome = await fetch(`${base}&sheet=Trang_Chu`);
-                const homeData = JSON.parse((await resHome.text()).substring(47).slice(0, -2)).table.rows;
+                const homeRows = JSON.parse((await resHome.text()).substring(47).slice(0, -2)).table.rows;
                 
-                document.title = homeData[1].c[1].v;
-                document.getElementById('intro-text').innerText = homeData[2].c[1].v;
-                document.getElementById('process-text').innerText = homeData[3].c[1].v;
-                document.getElementById('f1').innerText = homeData[4].c[1].v;
-                document.getElementById('f2').innerText = homeData[5].c[1].v;
-                document.getElementById('f3').innerText = homeData[6].c[1].v;
+                document.title = homeRows[1].c[1].v;
+                document.getElementById('intro-text').innerText = homeRows[2].c[1].v;
+                document.getElementById('activity-text').innerText = homeRows[3].c[1].v;
+                document.getElementById('f1').innerText = homeRows[4].c[1].v;
+                document.getElementById('f2').innerText = homeRows[5].c[1].v;
+                document.getElementById('f3').innerText = homeRows[6].c[1].v;
 
-                // 2. Load Sản Phẩm
+                // 2. San Pham (Lấy Mã SP từ cột đầu tiên)
                 const resProd = await fetch(`${base}&sheet=San_Pham`);
                 const prodRows = JSON.parse((await resProd.text()).substring(47).slice(0, -2)).table.rows;
                 let prodHTML = '';
 
                 for(let i=1; i < prodRows.length; i++) {
                     const r = prodRows[i].c;
-                    if(!r || !r[1]) continue;
+                    if(!r || !r[0]) continue; // R[0] là Mã SP (Cột đầu tiên)
                     
                     const p = {
-                        ma: r[1].v,
-                        ten: r[2].v,
+                        ma: r[0].v.toString().trim(),
+                        ten: r[2] ? r[2].v : 'Sản phẩm',
                         gia: r[3] ? r[3].v.toLocaleString() + 'đ' : 'Liên hệ',
                         tags: r[4] ? r[4].v.split(';') : [],
-                        mota: r[5] ? r[5].v : 'Đang cập nhật nội dung...'
+                        mota: r[5] ? r[5].v : ''
                     };
                     allProducts.push(p);
 
                     prodHTML += `
                         <div class="card" onclick="openModal('${p.ma}')">
                             <div class="img-container">
-                                <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/300x250?text=Sản+Phẩm'">
+                                <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/300x250?text=${p.ma}'">
                             </div>
                             <div class="card-body">
-                                <div class="tag-list">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-                                <h4>${p.ten}</h4>
+                                <div>${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                                <h4 style="margin:10px 0">${p.ten}</h4>
                                 <div class="price">${p.gia}</div>
                             </div>
                         </div>`;
                 }
                 document.getElementById('product-list').innerHTML = prodHTML;
 
-                // 3. Load Dự Án
+                // 3. Du An
                 const resProj = await fetch(`${base}&sheet=Du_An`);
                 const projRows = JSON.parse((await resProj.text()).substring(47).slice(0, -2)).table.rows;
                 let projHTML = '';
-
                 for(let i=1; i < projRows.length; i++) {
                     const r = projRows[i].c;
                     if(!r || !r[1]) continue;
-                    const maDA = r[1].v;
                     projHTML += `
                         <div class="proj-card">
-                            <img src="${imgBase}${maDA}.jpg" onerror="this.src='https://via.placeholder.com/400x300?text=Công+Trình'">
-                            <div class="proj-info">
-                                <h4 style="margin:0">${r[2].v}</h4>
-                                <small>${r[3] ? r[3].v : ''}</small>
+                            <img src="${imgBase}${r[1].v}.jpg" onerror="this.src='https://via.placeholder.com/400x300?text=Project'">
+                            <div style="padding:10px; background:rgba(0,0,0,0.7); position:absolute; bottom:0; width:100%">
+                                <strong>${r[2].v}</strong>
                             </div>
                         </div>`;
                 }
-                document.getElementById('project-list').innerHTML = projHTML + projHTML; // X2 để lặp mượt
+                document.getElementById('project-list').innerHTML = projHTML + projHTML;
 
                 document.getElementById('loader').style.display = 'none';
-            } catch (e) {
-                console.error(e);
-            }
+                startSlider();
+            } catch (e) { console.error(e); }
         }
 
         function openModal(ma) {
             const p = allProducts.find(x => x.ma === ma);
             if(!p) return;
-
             document.getElementById('modal-title').innerText = p.ten;
             document.getElementById('modal-price').innerText = p.gia;
             document.getElementById('modal-desc').innerText = p.mota;
             
-            // Album ảnh: Chính + 3 ảnh phụ
-            let albumHTML = `<img src="${imgBase}${p.ma}.jpg" onclick="window.open(this.src)">`;
+            let album = `<img src="${imgBase}${p.ma}.jpg" onclick="window.open(this.src)">`;
             [1, 2, 3].forEach(n => {
-                const s = `${imgBase}${p.ma}.${n}.jpg`;
-                albumHTML += `<img src="${s}" onerror="this.style.display='none'" onclick="window.open(this.src)">`;
+                album += `<img src="${imgBase}${p.ma}.${n}.jpg" onerror="this.style.display='none'" onclick="window.open(this.src)">`;
             });
-            
-            document.getElementById('modal-images').innerHTML = albumHTML;
+            document.getElementById('modal-images').innerHTML = album;
             document.getElementById('productModal').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('productModal')) closeModal();
-        }
+        function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+        window.onclick = e => { if(e.target == document.getElementById('productModal')) closeModal(); }
 
         init();
     </script>
