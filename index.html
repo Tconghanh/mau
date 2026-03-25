@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đang tải dữ liệu...</title>
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tconghanh/mau/main/Data/favicon.ico">
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -23,74 +19,72 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Roboto', sans-serif; line-height: 1.6; color: var(--dark-gray); scroll-behavior: smooth; }
 
-        /* HEADER & NAV */
+        /* HEADER */
         header { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
         nav { max-width: 1300px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
         .logo img { height: 50px; }
         nav ul { display: flex; list-style: none; gap: 20px; }
-        nav a { text-decoration: none; color: var(--dark-gray); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; transition: 0.3s; }
+        nav a { text-decoration: none; color: var(--dark-gray); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; }
         nav a:hover { color: var(--primary-blue); }
 
-        /* BANNER SLIDER */
-        .slider-container { width: 100%; height: 500px; margin-top: 70px; overflow: hidden; position: relative; }
+        /* SLIDER */
+        .slider-container { width: 100%; height: 450px; margin-top: 70px; overflow: hidden; position: relative; }
         .slider { display: flex; width: 500%; height: 100%; transition: transform 0.8s ease-in-out; }
         .slide { width: 20%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* SECTIONS COMMON */
-        section { padding: 80px 20px; max-width: 1300px; margin: auto; }
-        .section-title { text-align: center; margin-bottom: 40px; }
-        .section-title h2 { font-size: 2.2rem; color: var(--primary-blue); font-style: italic; text-transform: uppercase; }
-        .underline { width: 80px; height: 4px; background: var(--btn-orange); margin: 10px auto; }
-        .content-box { max-width: 900px; margin: auto; text-align: center; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        /* SECTIONS */
+        section { padding: 60px 20px; max-width: 1300px; margin: auto; }
+        .section-title { text-align: center; margin-bottom: 30px; }
+        .section-title h2 { font-size: 2rem; color: var(--primary-blue); font-style: italic; text-transform: uppercase; }
+        .underline { width: 60px; height: 4px; background: var(--btn-orange); margin: 8px auto; }
+        .content-box { max-width: 900px; margin: auto; text-align: center; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
 
-        /* PRODUCT FILTER */
+        /* FILTER (LẤY TỪ CỘT C) */
         .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
-        .filter-btn { padding: 8px 20px; border: 1px solid #ddd; background: #fff; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 0.8rem; transition: 0.3s; }
+        .filter-btn { padding: 8px 18px; border: 1px solid #ddd; background: #fff; border-radius: 20px; cursor: pointer; font-weight: 700; font-size: 0.75rem; transition: 0.3s; text-transform: uppercase; }
         .filter-btn.active, .filter-btn:hover { background: var(--primary-blue); color: #fff; border-color: var(--primary-blue); }
 
         /* PRODUCT GRID */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-        .product-card { background: #fff; border: 1px solid #eee; border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .product-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .product-card img { width: 100%; height: 180px; object-fit: contain; }
-        .product-card h3 { font-size: 0.85rem; margin: 15px 0 10px; height: 40px; overflow: hidden; text-transform: uppercase; }
+        .product-card h3 { font-size: 0.85rem; margin: 12px 0; height: 40px; overflow: hidden; color: #444; }
         .product-card .price { color: var(--price-red); font-weight: 700; font-size: 1.1rem; }
 
         /* MODAL DETAIL */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
-        .modal-content { background: #fff; width: 100%; max-width: 1000px; border-radius: 30px; display: grid; grid-template-columns: 45% 55%; position: relative; overflow: hidden; animation: zoomIn 0.3s; }
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .close-btn { position: absolute; top: 20px; right: 25px; font-size: 30px; color: #999; cursor: pointer; z-index: 10; }
-        .modal-left { padding: 30px; border-right: 1px solid #f0f0f0; }
-        .modal-right { padding: 40px; overflow-y: auto; max-height: 85vh; }
-        #main-preview { width: 100%; height: 300px; object-fit: contain; margin-bottom: 20px; }
-        .thumbs { display: flex; gap: 10px; justify-content: center; }
-        .thumbs img { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; }
-        .specs-list { list-style: none; margin-top: 20px; }
-        .specs-list li { position: relative; padding-left: 25px; margin-bottom: 8px; font-size: 0.9rem; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 15px; backdrop-filter: blur(4px); }
+        .modal-content { background: #fff; width: 100%; max-width: 950px; border-radius: 25px; display: grid; grid-template-columns: 45% 55%; position: relative; overflow: hidden; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; color: #999; cursor: pointer; z-index: 10; }
+        .modal-left { padding: 25px; border-right: 1px solid #f0f0f0; background: #fff; }
+        .modal-right { padding: 35px; overflow-y: auto; max-height: 85vh; }
+        #main-preview { width: 100%; height: 320px; object-fit: contain; margin-bottom: 20px; }
+        .thumbs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .thumbs img { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 6px; cursor: pointer; object-fit: cover; }
+        .specs-list { list-style: none; margin-top: 15px; }
+        .specs-list li { position: relative; padding-left: 22px; margin-bottom: 6px; font-size: 0.9rem; color: #555; }
         .specs-list li::before { content: '✓'; position: absolute; left: 0; color: #2ecc71; font-weight: 700; }
-        .btn-buy-now { width: 100%; padding: 15px; background: var(--btn-orange); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 25px; }
+        .btn-buy-now { width: 100%; padding: 15px; background: var(--btn-orange); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 20px; }
 
-        /* PROJECTS MARQUEE */
-        #projects { background: #111; color: #fff; max-width: 100%; padding: 60px 0; overflow: hidden; }
-        .marquee { display: flex; width: max-content; animation: scroll 30s linear infinite; gap: 20px; }
-        .proj-card { width: 350px; position: relative; border-radius: 15px; overflow: hidden; }
-        .proj-card img { width: 100%; height: 230px; object-fit: cover; }
-        .proj-name { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); padding: 10px; font-size: 0.9rem; }
+        /* PROJECTS */
+        #projects { background: #111; color: #fff; max-width: 100%; padding: 50px 0; overflow: hidden; }
+        .marquee { display: flex; width: max-content; animation: scroll 35s linear infinite; gap: 20px; }
+        .proj-card { width: 320px; position: relative; border-radius: 12px; overflow: hidden; }
+        .proj-card img { width: 100%; height: 210px; object-fit: cover; display: block; }
+        .proj-name { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); padding: 8px 12px; font-size: 0.85rem; }
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* FOOTER */
-        footer { background: #1a252f; color: #bdc3c7; padding: 60px 20px; }
-        .footer-grid { max-width: 1300px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
-        .footer-logo { height: 60px; margin-bottom: 20px; }
+        footer { background: #1a252f; color: #bdc3c7; padding: 50px 20px; }
+        .footer-grid { max-width: 1300px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 30px; }
+        .footer-logo { height: 55px; margin-bottom: 15px; }
 
-        /* LOADER */
-        #loader { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; font-weight: 700; }
+        #loader { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; font-weight: 700; color: var(--primary-blue); }
 
         @media (max-width: 850px) {
             .modal-content { grid-template-columns: 1fr; }
-            .slider-container { height: 250px; }
+            .slider-container { height: 220px; }
             .footer-grid { grid-template-columns: 1fr; }
             nav ul { display: none; }
         }
@@ -137,18 +131,21 @@
 
     <section id="products">
         <div class="section-title"><h2>Sản phẩm tiêu biểu</h2><div class="underline"></div></div>
+        
+        <!-- Filter Box lấy dữ liệu từ Cột C -->
         <div class="filter-container" id="filter-box">
             <button class="filter-btn active" onclick="filterProducts('TẤT CẢ', this)">TẤT CẢ</button>
         </div>
+
         <div class="product-grid" id="product-grid"></div>
     </section>
 
     <section id="projects">
-        <div class="section-title"><h2 style="color:#fff">Dự án đã triển khai</h2><div class="underline"></div></div>
+        <div class="section-title"><h2 style="color:#fff">Dự án tiêu biểu</h2><div class="underline"></div></div>
         <div class="marquee" id="project-list"></div>
     </section>
 
-    <!-- Modal -->
+    <!-- Modal Detail -->
     <div id="pModal" class="modal" onclick="if(event.target==this) closeModal()">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -157,11 +154,11 @@
                 <div class="thumbs" id="thumb-box"></div>
             </div>
             <div class="modal-right">
-                <div id="m-cat" style="color:var(--btn-orange); font-weight:700; font-size:0.8rem"></div>
-                <h2 id="m-title" style="margin:10px 0"></h2>
-                <div id="m-price" class="price" style="font-size:2rem; color:var(--price-red); font-weight:700"></div>
-                <div style="color:#aaa; font-size:0.8rem; margin-bottom:20px">(ĐÃ BAO GỒM VAT)</div>
-                <div style="color:var(--primary-blue); font-weight:700">⚙ THÔNG SỐ KỸ THUẬT</div>
+                <div id="m-cat" style="color:var(--btn-orange); font-weight:700; font-size:0.8rem; text-transform: uppercase;"></div>
+                <h2 id="m-title" style="margin:10px 0; color:#1a1a1a"></h2>
+                <div id="m-price" class="price" style="font-size:1.8rem; color:var(--price-red); font-weight:700"></div>
+                <div style="color:#aaa; font-size:0.75rem; margin-bottom:20px">(ĐÃ BAO GỒM VAT)</div>
+                <div style="color:var(--primary-blue); font-weight:700; font-size:0.9rem; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 5px;">⚙ Thông số kỹ thuật</div>
                 <ul id="m-specs" class="specs-list"></ul>
                 <button class="btn-buy-now">🛒 THÊM VÀO GIỎ HÀNG</button>
             </div>
@@ -185,7 +182,7 @@
         const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
         let products = [];
-        let curIndex = 0;
+        let curSlide = 0;
 
         async function init() {
             try {
@@ -199,26 +196,28 @@
                 document.getElementById('f2').innerText = home[5].c[1].v;
                 document.getElementById('f3').innerText = home[6].c[1].v;
 
-                // 2. SẢN PHẨM
+                // 2. SẢN PHẨM (Dữ liệu từ cột C là Danh Mục)
                 const resP = await fetch(`${base}&sheet=San_Pham`);
                 const prodRows = JSON.parse((await resP.text()).substring(47).slice(0, -2)).table.rows;
+                
                 products = prodRows.slice(1).map(r => ({
-                    ma: r.c[0] ? r.c[0].v.toString().trim() : '',
-                    ten: r.c[2] ? r.c[2].v : '',
-                    gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ',
-                    cats: r.c[4] ? r.c[4].v.split(';').map(s => s.trim()) : [],
-                    mota: r.c[5] ? r.c[5].v : ''
+                    ma: r.c[0] ? r.c[0].v.toString().trim() : '',     // Cột A: Mã
+                    ten: r.c[1] ? r.c[1].v : '',                       // Cột B: Tên
+                    cats: r.c[2] ? r.c[2].v.split(';').map(s => s.trim()) : [], // Cột C: DANH MỤC
+                    gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ', // Cột D: Giá
+                    mota: r.c[4] ? r.c[4].v : ''                      // Cột E: Mô tả
                 })).filter(x => x.ma !== '');
 
-                // Tạo bộ lọc
-                const cats = new Set();
-                products.forEach(p => p.cats.forEach(c => cats.add(c)));
-                cats.forEach(c => {
-                    const b = document.createElement('button');
-                    b.className = 'filter-btn';
-                    b.innerText = c.toUpperCase();
-                    b.onclick = () => filterProducts(c, b);
-                    document.getElementById('filter-box').appendChild(b);
+                // Tự động tạo nút lọc từ dữ liệu Cột C
+                const categories = new Set();
+                products.forEach(p => p.cats.forEach(c => categories.add(c)));
+                const filterBox = document.getElementById('filter-box');
+                categories.forEach(c => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.innerText = c.toUpperCase();
+                    btn.onclick = () => filterProducts(c, btn);
+                    filterBox.appendChild(btn);
                 });
 
                 renderProducts(products);
@@ -232,14 +231,14 @@
                 });
                 document.getElementById('project-list').innerHTML = projHTML + projHTML;
 
-                // START SLIDER
+                // SLIDER AUTO
                 setInterval(() => {
-                    curIndex = (curIndex + 1) % 5;
-                    document.getElementById('slider').style.transform = `translateX(-${curIndex * 20}%)`;
+                    curSlide = (curSlide + 1) % 5;
+                    document.getElementById('slider').style.transform = `translateX(-${curSlide * 20}%)`;
                 }, 4000);
 
                 document.getElementById('loader').style.display = 'none';
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error("Lỗi:", e); }
         }
 
         function renderProducts(data) {
@@ -260,6 +259,7 @@
 
         function openModal(ma) {
             const p = products.find(x => x.ma === ma);
+            if(!p) return;
             document.getElementById('m-title').innerText = p.ten;
             document.getElementById('m-price').innerText = p.gia;
             document.getElementById('m-cat').innerText = p.cats.join(' | ');
