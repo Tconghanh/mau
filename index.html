@@ -3,141 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sản Phẩm Tiêu Biểu</title>
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tconghanh/mau/main/Data/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Sản Phẩm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-blue: #0071ba;
             --price-red: #d92027;
-            --text-dark: #333;
-            --bg-light: #f4f4f4;
+            --btn-orange: #ff8a22;
+            --text-gray: #666;
         }
-        body { font-family: 'Roboto', sans-serif; background-color: #fff; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; }
 
-        /* Tiêu đề phần */
-        .section-product { padding: 60px 20px; max-width: 1300px; margin: auto; text-align: center; }
-        .section-product h2 { 
-            color: var(--primary-blue); 
-            font-size: 2.5rem; 
-            font-style: italic; 
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-        .underline { width: 80px; height: 4px; background: #f39c12; margin: 0 auto 40px; }
-
-        /* Bộ lọc danh mục */
-        .filter-container { 
-            display: flex; 
-            justify-content: center; 
-            gap: 10px; 
-            flex-wrap: wrap; 
-            margin-bottom: 40px; 
-        }
-        .filter-btn {
-            padding: 8px 25px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            transition: 0.3s;
-            color: #555;
-        }
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-            border-color: var(--primary-blue);
-        }
-
-        /* Lưới sản phẩm - 5 cột trên PC */
+        /* 1. LƯỚI SẢN PHẨM (Bên ngoài) */
+        .section-product { padding: 50px 20px; max-width: 1300px; margin: auto; }
         .product-grid { 
             display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
             gap: 20px; 
         }
-
-        /* Card sản phẩm */
         .product-card {
-            background: white;
+            background: white; border-radius: 12px; padding: 15px;
+            text-align: center; cursor: pointer; transition: 0.3s;
             border: 1px solid #eee;
-            border-radius: 15px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: relative;
         }
-        .product-card:hover { 
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .product-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-        .product-card h3 {
-            font-size: 0.85rem;
-            color: var(--text-dark);
-            height: 40px;
-            overflow: hidden;
-            text-transform: uppercase;
-            margin: 10px 0;
-            font-weight: 500;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        .product-card .price {
-            color: var(--price-red);
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
-        .btn-add-cart {
-            width: 100%;
-            padding: 10px;
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
-        .btn-add-cart:hover { background: #005a96; }
+        .product-card:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: translateY(-5px); }
+        .product-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; }
+        .product-card h3 { font-size: 0.9rem; color: #333; height: 40px; margin: 10px 0; overflow: hidden; text-transform: uppercase; }
+        .product-card .price { color: var(--price-red); font-weight: 700; font-size: 1.1rem; }
 
-        /* Responsive */
-        @media (max-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 768px) { 
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } 
-            .section-product h2 { font-size: 1.8rem; }
+        /* 2. MODAL CHI TIẾT (Cửa sổ bật lên) */
+        .modal { 
+            display: none; position: fixed; inset: 0; 
+            background: rgba(0,0,0,0.6); z-index: 2000; 
+            justify-content: center; align-items: center; padding: 15px;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content { 
+            background: white; width: 100%; max-width: 1000px; 
+            border-radius: 30px; display: grid; grid-template-columns: 45% 55%; 
+            position: relative; overflow: hidden; animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
+        .close-btn { 
+            position: absolute; top: 20px; right: 25px; 
+            font-size: 28px; color: #999; cursor: pointer; z-index: 10;
+        }
+
+        /* Modal Bên Trái (Ảnh) */
+        .modal-left { padding: 40px; background: #fff; border-right: 1px solid #f0f0f0; }
+        #main-img-preview { width: 100%; height: 350px; object-fit: contain; margin-bottom: 20px; }
+        .thumb-list { display: flex; gap: 10px; justify-content: center; overflow-x: auto; }
+        .thumb-list img { 
+            width: 70px; height: 70px; border: 1px solid #eee; 
+            border-radius: 10px; cursor: pointer; object-fit: cover; 
+        }
+        .thumb-list img:hover { border-color: var(--btn-orange); }
+
+        /* Modal Bên Phải (Thông tin) */
+        .modal-right { padding: 40px; overflow-y: auto; max-height: 85vh; }
+        .modal-category { color: var(--btn-orange); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+        .modal-title { font-size: 1.8rem; color: #1a1a1a; margin-bottom: 15px; font-weight: 700; }
+        .modal-price { font-size: 2rem; color: var(--price-red); font-weight: 700; margin-bottom: 5px; }
+        .vat-note { color: #aaa; font-size: 0.8rem; margin-bottom: 25px; }
+
+        .specs-title { 
+            font-size: 1rem; color: var(--primary-blue); font-weight: 700; 
+            display: flex; align-items: center; gap: 8px; margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .specs-list { list-style: none; padding: 0; }
+        .specs-list li { 
+            position: relative; padding-left: 25px; margin-bottom: 10px; 
+            color: #555; font-size: 0.9rem; line-height: 1.4;
+        }
+        .specs-list li::before { 
+            content: '✓'; position: absolute; left: 0; color: #2ecc71; font-weight: 700; 
+        }
+
+        .btn-buy { 
+            background: var(--btn-orange); color: white; border: none; 
+            width: 100%; padding: 18px; border-radius: 15px; 
+            font-weight: 700; font-size: 1.1rem; cursor: pointer;
+            margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-buy:hover { background: #e67e22; }
+
+        /* Mobile */
+        @media (max-width: 850px) {
+            .modal-content { grid-template-columns: 1fr; border-radius: 20px; }
+            .modal-left { padding: 20px; }
+            #main-img-preview { height: 250px; }
         }
     </style>
 </head>
 <body>
 
     <section class="section-product">
-        <h2>SẢN PHẨM TIÊU BIỂU</h2>
-        <div class="underline"></div>
-
-        <!-- Bộ lọc -->
-        <div class="filter-container" id="filter-box">
-            <button class="filter-btn active" onclick="filterData('TẤT CẢ')">TẤT CẢ</button>
-        </div>
-
-        <!-- Lưới sản phẩm -->
-        <div class="product-grid" id="product-container">
-            <!-- Dữ liệu sẽ đổ vào đây -->
-        </div>
+        <div class="product-grid" id="product-grid"></div>
     </section>
+
+    <!-- Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-left">
+                <img id="main-img-preview" src="" alt="">
+                <div class="thumb-list" id="thumb-list"></div>
+            </div>
+            <div class="modal-right">
+                <div class="modal-category" id="m-category"></div>
+                <h2 class="modal-title" id="m-title"></h2>
+                <div class="modal-price" id="m-price"></div>
+                <div class="vat-note">(ĐÃ BAO GỒM VAT)</div>
+                
+                <div class="specs-title">⚙ THÔNG SỐ KỸ THUẬT</div>
+                <ul class="specs-list" id="m-specs"></ul>
+
+                <button class="btn-buy">🛒 THÊM VÀO GIỎ HÀNG</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const sheetId = '1knLdhA1j69Qqfa6nMIe20vfufQnvGr4THpehnK0mHPk';
@@ -146,70 +132,65 @@
 
         let products = [];
 
-        async function loadProducts() {
-            try {
-                const response = await fetch(base);
-                const text = await response.text();
-                const jsonData = JSON.parse(text.substring(47).slice(0, -2));
-                const rows = jsonData.table.rows;
+        async function init() {
+            const res = await fetch(base);
+            const text = await res.text();
+            const data = JSON.parse(text.substring(47).slice(0, -2)).table.rows;
 
-                // 1. Xử lý dữ liệu
-                products = rows.slice(1).map(r => ({
-                    ma: r.c[0] ? r.c[0].v.toString().trim() : '',
-                    ten: r.c[2] ? r.c[2].v : '',
-                    gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ',
-                    danhMuc: r.c[4] ? r.c[4].v.split(';').map(s => s.trim()) : []
-                })).filter(p => p.ma !== '');
+            products = data.slice(1).map(r => ({
+                ma: r.c[0] ? r.c[0].v.toString() : '',
+                ten: r.c[2] ? r.c[2].v : '',
+                gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ',
+                danhMuc: r.c[4] ? r.c[4].v : 'SẢN PHẨM',
+                moTa: r.c[5] ? r.c[5].v : ''
+            }));
 
-                // 2. Tạo nút lọc danh mục tự động
-                const filterBox = document.getElementById('filter-box');
-                const categories = new Set();
-                products.forEach(p => p.danhMuc.forEach(cat => categories.add(cat)));
-                
-                categories.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.className = 'filter-btn';
-                    btn.innerText = cat.toUpperCase();
-                    btn.onclick = () => filterData(cat, btn);
-                    filterBox.appendChild(btn);
-                });
-
-                // 3. Hiển thị tất cả lúc đầu
-                displayProducts(products);
-
-            } catch (error) {
-                console.error("Lỗi tải dữ liệu:", error);
-            }
-        }
-
-        function displayProducts(data) {
-            const container = document.getElementById('product-container');
-            container.innerHTML = data.map(p => `
-                <div class="product-card">
-                    <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/250x200?text=${p.ma}'">
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="product-card" onclick="openModal('${p.ma}')">
+                    <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/200'">
                     <h3>${p.ten}</h3>
                     <div class="price">${p.gia}</div>
-                    <button class="btn-add-cart">THÊM GIỎ HÀNG</button>
                 </div>
             `).join('');
         }
 
-        function filterData(category, btnElement) {
-            // Cập nhật trạng thái nút
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            if(btnElement) btnElement.classList.add('active');
-            else document.querySelector('.filter-btn').classList.add('active');
+        function openModal(ma) {
+            const p = products.find(x => x.ma === ma);
+            if(!p) return;
 
-            // Lọc dữ liệu
-            if(category === 'TẤT CẢ') {
-                displayProducts(products);
-            } else {
-                const filtered = products.filter(p => p.danhMuc.includes(category));
-                displayProducts(filtered);
-            }
+            document.getElementById('m-title').innerText = p.ten;
+            document.getElementById('m-price').innerText = p.gia;
+            document.getElementById('m-category').innerText = p.danhMuc.replace(';', ' | ');
+            document.getElementById('main-img-preview').src = `${imgBase}${p.ma}.jpg`;
+
+            // Xử lý thông số kỹ thuật (Tách từng dòng trong Sheet thành thẻ li)
+            const specsContainer = document.getElementById('m-specs');
+            const specLines = p.moTa.split('\n').filter(line => line.trim() !== '');
+            specsContainer.innerHTML = specLines.map(line => `<li>${line.trim()}</li>`).join('');
+
+            // Xử lý Album ảnh phụ (Kiểm tra ảnh 1, 2, 3, 4)
+            const thumbContainer = document.getElementById('thumb-list');
+            let thumbs = `<img src="${imgBase}${p.ma}.jpg" onclick="changePreview('${imgBase}${p.ma}.jpg')">`;
+            [1, 2, 3, 4].forEach(n => {
+                thumbs += `<img src="${imgBase}${p.ma}.${n}.jpg" onerror="this.style.display='none'" onclick="changePreview('${imgBase}${p.ma}.${n}.jpg')">`;
+            });
+            thumbContainer.innerHTML = thumbs;
+
+            document.getElementById('productModal').style.display = 'flex';
         }
 
-        loadProducts();
+        function changePreview(src) {
+            document.getElementById('main-img-preview').src = src;
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        window.onclick = (e) => { if(e.target.classList.contains('modal')) closeModal(); }
+
+        init();
     </script>
 </body>
 </html>
