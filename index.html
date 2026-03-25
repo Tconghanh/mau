@@ -3,150 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sản Phẩm</title>
+    <title>Đang tải dữ liệu...</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tconghanh/mau/main/Data/favicon.ico">
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary-blue: #0071ba;
             --price-red: #d92027;
             --btn-orange: #ff8a22;
-            --text-gray: #666;
+            --dark-gray: #333;
+            --light-bg: #f8f9fa;
         }
-        body { font-family: 'Roboto', sans-serif; background-color: #f8f9fa; }
 
-        /* 1. LƯỚI SẢN PHẨM (Bên ngoài) */
-        .section-product { padding: 50px 20px; max-width: 1300px; margin: auto; }
-        .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
-            gap: 20px; 
-        }
-        .product-card {
-            background: white; border-radius: 12px; padding: 15px;
-            text-align: center; cursor: pointer; transition: 0.3s;
-            border: 1px solid #eee;
-        }
-        .product-card:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: translateY(-5px); }
-        .product-card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 10px; }
-        .product-card h3 { font-size: 0.9rem; color: #333; height: 40px; margin: 10px 0; overflow: hidden; text-transform: uppercase; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; line-height: 1.6; color: var(--dark-gray); scroll-behavior: smooth; }
+
+        /* HEADER & NAV */
+        header { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        nav { max-width: 1300px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+        .logo img { height: 50px; }
+        nav ul { display: flex; list-style: none; gap: 20px; }
+        nav a { text-decoration: none; color: var(--dark-gray); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; transition: 0.3s; }
+        nav a:hover { color: var(--primary-blue); }
+
+        /* BANNER SLIDER */
+        .slider-container { width: 100%; height: 500px; margin-top: 70px; overflow: hidden; position: relative; }
+        .slider { display: flex; width: 500%; height: 100%; transition: transform 0.8s ease-in-out; }
+        .slide { width: 20%; height: 100%; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* SECTIONS COMMON */
+        section { padding: 80px 20px; max-width: 1300px; margin: auto; }
+        .section-title { text-align: center; margin-bottom: 40px; }
+        .section-title h2 { font-size: 2.2rem; color: var(--primary-blue); font-style: italic; text-transform: uppercase; }
+        .underline { width: 80px; height: 4px; background: var(--btn-orange); margin: 10px auto; }
+        .content-box { max-width: 900px; margin: auto; text-align: center; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+
+        /* PRODUCT FILTER */
+        .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+        .filter-btn { padding: 8px 20px; border: 1px solid #ddd; background: #fff; border-radius: 25px; cursor: pointer; font-weight: 700; font-size: 0.8rem; transition: 0.3s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary-blue); color: #fff; border-color: var(--primary-blue); }
+
+        /* PRODUCT GRID */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+        .product-card { background: #fff; border: 1px solid #eee; border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; height: 180px; object-fit: contain; }
+        .product-card h3 { font-size: 0.85rem; margin: 15px 0 10px; height: 40px; overflow: hidden; text-transform: uppercase; }
         .product-card .price { color: var(--price-red); font-weight: 700; font-size: 1.1rem; }
 
-        /* 2. MODAL CHI TIẾT (Cửa sổ bật lên) */
-        .modal { 
-            display: none; position: fixed; inset: 0; 
-            background: rgba(0,0,0,0.6); z-index: 2000; 
-            justify-content: center; align-items: center; padding: 15px;
-            backdrop-filter: blur(4px);
-        }
-        .modal-content { 
-            background: white; width: 100%; max-width: 1000px; 
-            border-radius: 30px; display: grid; grid-template-columns: 45% 55%; 
-            position: relative; overflow: hidden; animation: fadeIn 0.3s;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        
-        .close-btn { 
-            position: absolute; top: 20px; right: 25px; 
-            font-size: 28px; color: #999; cursor: pointer; z-index: 10;
-        }
-
-        /* Modal Bên Trái (Ảnh) */
-        .modal-left { padding: 40px; background: #fff; border-right: 1px solid #f0f0f0; }
-        #main-img-preview { width: 100%; height: 350px; object-fit: contain; margin-bottom: 20px; }
-        .thumb-list { display: flex; gap: 10px; justify-content: center; overflow-x: auto; }
-        .thumb-list img { 
-            width: 70px; height: 70px; border: 1px solid #eee; 
-            border-radius: 10px; cursor: pointer; object-fit: cover; 
-        }
-        .thumb-list img:hover { border-color: var(--btn-orange); }
-
-        /* Modal Bên Phải (Thông tin) */
+        /* MODAL DETAIL */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-content { background: #fff; width: 100%; max-width: 1000px; border-radius: 30px; display: grid; grid-template-columns: 45% 55%; position: relative; overflow: hidden; animation: zoomIn 0.3s; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .close-btn { position: absolute; top: 20px; right: 25px; font-size: 30px; color: #999; cursor: pointer; z-index: 10; }
+        .modal-left { padding: 30px; border-right: 1px solid #f0f0f0; }
         .modal-right { padding: 40px; overflow-y: auto; max-height: 85vh; }
-        .modal-category { color: var(--btn-orange); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
-        .modal-title { font-size: 1.8rem; color: #1a1a1a; margin-bottom: 15px; font-weight: 700; }
-        .modal-price { font-size: 2rem; color: var(--price-red); font-weight: 700; margin-bottom: 5px; }
-        .vat-note { color: #aaa; font-size: 0.8rem; margin-bottom: 25px; }
+        #main-preview { width: 100%; height: 300px; object-fit: contain; margin-bottom: 20px; }
+        .thumbs { display: flex; gap: 10px; justify-content: center; }
+        .thumbs img { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; }
+        .specs-list { list-style: none; margin-top: 20px; }
+        .specs-list li { position: relative; padding-left: 25px; margin-bottom: 8px; font-size: 0.9rem; }
+        .specs-list li::before { content: '✓'; position: absolute; left: 0; color: #2ecc71; font-weight: 700; }
+        .btn-buy-now { width: 100%; padding: 15px; background: var(--btn-orange); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 25px; }
 
-        .specs-title { 
-            font-size: 1rem; color: var(--primary-blue); font-weight: 700; 
-            display: flex; align-items: center; gap: 8px; margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-        .specs-list { list-style: none; padding: 0; }
-        .specs-list li { 
-            position: relative; padding-left: 25px; margin-bottom: 10px; 
-            color: #555; font-size: 0.9rem; line-height: 1.4;
-        }
-        .specs-list li::before { 
-            content: '✓'; position: absolute; left: 0; color: #2ecc71; font-weight: 700; 
-        }
+        /* PROJECTS MARQUEE */
+        #projects { background: #111; color: #fff; max-width: 100%; padding: 60px 0; overflow: hidden; }
+        .marquee { display: flex; width: max-content; animation: scroll 30s linear infinite; gap: 20px; }
+        .proj-card { width: 350px; position: relative; border-radius: 15px; overflow: hidden; }
+        .proj-card img { width: 100%; height: 230px; object-fit: cover; }
+        .proj-name { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.7); padding: 10px; font-size: 0.9rem; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        .btn-buy { 
-            background: var(--btn-orange); color: white; border: none; 
-            width: 100%; padding: 18px; border-radius: 15px; 
-            font-weight: 700; font-size: 1.1rem; cursor: pointer;
-            margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-        .btn-buy:hover { background: #e67e22; }
+        /* FOOTER */
+        footer { background: #1a252f; color: #bdc3c7; padding: 60px 20px; }
+        .footer-grid { max-width: 1300px; margin: auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 40px; }
+        .footer-logo { height: 60px; margin-bottom: 20px; }
 
-        /* Mobile */
+        /* LOADER */
+        #loader { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; font-weight: 700; }
+
         @media (max-width: 850px) {
-            .modal-content { grid-template-columns: 1fr; border-radius: 20px; }
-            .modal-left { padding: 20px; }
-            #main-img-preview { height: 250px; }
+            .modal-content { grid-template-columns: 1fr; }
+            .slider-container { height: 250px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            nav ul { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <section class="section-product">
+    <div id="loader">ĐANG TẢI DỮ LIỆU...</div>
+
+    <header>
+        <nav>
+            <div class="logo"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" alt="Logo"></div>
+            <ul>
+                <li><a href="#intro">Giới thiệu</a></li>
+                <li><a href="#activity">Lĩnh vực hoạt động</a></li>
+                <li><a href="#products">Sản phẩm</a></li>
+                <li><a href="#projects">Dự án</a></li>
+                <li><a href="#footer">Liên hệ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL1.jpg"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL2.jpg"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL3.jpg"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL4.jpg"></div>
+            <div class="slide"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/SL5.jpg"></div>
+        </div>
+    </div>
+
+    <section id="intro">
+        <div class="section-title"><h2>Giới thiệu</h2><div class="underline"></div></div>
+        <div id="intro-text" class="content-box"></div>
+    </section>
+
+    <section id="activity" style="background: var(--light-bg); max-width: 100%;">
+        <div style="max-width: 1300px; margin: auto;">
+            <div class="section-title"><h2>Lĩnh vực hoạt động</h2><div class="underline"></div></div>
+            <div id="activity-text" class="content-box"></div>
+        </div>
+    </section>
+
+    <section id="products">
+        <div class="section-title"><h2>Sản phẩm tiêu biểu</h2><div class="underline"></div></div>
+        <div class="filter-container" id="filter-box">
+            <button class="filter-btn active" onclick="filterProducts('TẤT CẢ', this)">TẤT CẢ</button>
+        </div>
         <div class="product-grid" id="product-grid"></div>
     </section>
 
+    <section id="projects">
+        <div class="section-title"><h2 style="color:#fff">Dự án đã triển khai</h2><div class="underline"></div></div>
+        <div class="marquee" id="project-list"></div>
+    </section>
+
     <!-- Modal -->
-    <div id="productModal" class="modal">
+    <div id="pModal" class="modal" onclick="if(event.target==this) closeModal()">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <div class="modal-left">
-                <img id="main-img-preview" src="" alt="">
-                <div class="thumb-list" id="thumb-list"></div>
+                <img id="main-preview" src="">
+                <div class="thumbs" id="thumb-box"></div>
             </div>
             <div class="modal-right">
-                <div class="modal-category" id="m-category"></div>
-                <h2 class="modal-title" id="m-title"></h2>
-                <div class="modal-price" id="m-price"></div>
-                <div class="vat-note">(ĐÃ BAO GỒM VAT)</div>
-                
-                <div class="specs-title">⚙ THÔNG SỐ KỸ THUẬT</div>
-                <ul class="specs-list" id="m-specs"></ul>
-
-                <button class="btn-buy">🛒 THÊM VÀO GIỎ HÀNG</button>
+                <div id="m-cat" style="color:var(--btn-orange); font-weight:700; font-size:0.8rem"></div>
+                <h2 id="m-title" style="margin:10px 0"></h2>
+                <div id="m-price" class="price" style="font-size:2rem; color:var(--price-red); font-weight:700"></div>
+                <div style="color:#aaa; font-size:0.8rem; margin-bottom:20px">(ĐÃ BAO GỒM VAT)</div>
+                <div style="color:var(--primary-blue); font-weight:700">⚙ THÔNG SỐ KỸ THUẬT</div>
+                <ul id="m-specs" class="specs-list"></ul>
+                <button class="btn-buy-now">🛒 THÊM VÀO GIỎ HÀNG</button>
             </div>
         </div>
     </div>
 
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" class="footer-logo">
+                <div id="f1"></div>
+            </div>
+            <div class="footer-col"><h4>Địa chỉ</h4><div id="f2"></div></div>
+            <div class="footer-col"><h4>Hỗ trợ</h4><div id="f3"></div></div>
+        </div>
+    </footer>
+
     <script>
         const sheetId = '1knLdhA1j69Qqfa6nMIe20vfufQnvGr4THpehnK0mHPk';
         const imgBase = `https://raw.githubusercontent.com/tconghanh/mau/main/Data/`;
-        const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=San_Pham`;
+        const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
         let products = [];
+        let curIndex = 0;
 
         async function init() {
-            const res = await fetch(base);
-            const text = await res.text();
-            const data = JSON.parse(text.substring(47).slice(0, -2)).table.rows;
+            try {
+                // 1. TRANG CHỦ
+                const resH = await fetch(`${base}&sheet=Trang_Chu`);
+                const home = JSON.parse((await resH.text()).substring(47).slice(0, -2)).table.rows;
+                document.title = home[1].c[1].v;
+                document.getElementById('intro-text').innerText = home[2].c[1].v;
+                document.getElementById('activity-text').innerText = home[3].c[1].v;
+                document.getElementById('f1').innerText = home[4].c[1].v;
+                document.getElementById('f2').innerText = home[5].c[1].v;
+                document.getElementById('f3').innerText = home[6].c[1].v;
 
-            products = data.slice(1).map(r => ({
-                ma: r.c[0] ? r.c[0].v.toString() : '',
-                ten: r.c[2] ? r.c[2].v : '',
-                gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ',
-                danhMuc: r.c[4] ? r.c[4].v : 'SẢN PHẨM',
-                moTa: r.c[5] ? r.c[5].v : ''
-            }));
+                // 2. SẢN PHẨM
+                const resP = await fetch(`${base}&sheet=San_Pham`);
+                const prodRows = JSON.parse((await resP.text()).substring(47).slice(0, -2)).table.rows;
+                products = prodRows.slice(1).map(r => ({
+                    ma: r.c[0] ? r.c[0].v.toString().trim() : '',
+                    ten: r.c[2] ? r.c[2].v : '',
+                    gia: r.c[3] ? r.c[3].v.toLocaleString('vi-VN') + ' đ' : 'Liên hệ',
+                    cats: r.c[4] ? r.c[4].v.split(';').map(s => s.trim()) : [],
+                    mota: r.c[5] ? r.c[5].v : ''
+                })).filter(x => x.ma !== '');
 
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = products.map(p => `
+                // Tạo bộ lọc
+                const cats = new Set();
+                products.forEach(p => p.cats.forEach(c => cats.add(c)));
+                cats.forEach(c => {
+                    const b = document.createElement('button');
+                    b.className = 'filter-btn';
+                    b.innerText = c.toUpperCase();
+                    b.onclick = () => filterProducts(c, b);
+                    document.getElementById('filter-box').appendChild(b);
+                });
+
+                renderProducts(products);
+
+                // 3. DỰ ÁN
+                const resD = await fetch(`${base}&sheet=Du_An`);
+                const projRows = JSON.parse((await resD.text()).substring(47).slice(0, -2)).table.rows;
+                let projHTML = '';
+                projRows.slice(1).forEach(r => {
+                    if(r.c[1]) projHTML += `<div class="proj-card"><img src="${imgBase}${r.c[1].v}.jpg"><div class="proj-name">${r.c[2].v}</div></div>`;
+                });
+                document.getElementById('project-list').innerHTML = projHTML + projHTML;
+
+                // START SLIDER
+                setInterval(() => {
+                    curIndex = (curIndex + 1) % 5;
+                    document.getElementById('slider').style.transform = `translateX(-${curIndex * 20}%)`;
+                }, 4000);
+
+                document.getElementById('loader').style.display = 'none';
+            } catch (e) { console.error(e); }
+        }
+
+        function renderProducts(data) {
+            document.getElementById('product-grid').innerHTML = data.map(p => `
                 <div class="product-card" onclick="openModal('${p.ma}')">
                     <img src="${imgBase}${p.ma}.jpg" onerror="this.src='https://via.placeholder.com/200'">
                     <h3>${p.ten}</h3>
@@ -155,40 +252,29 @@
             `).join('');
         }
 
+        function filterProducts(c, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProducts(c === 'TẤT CẢ' ? products : products.filter(p => p.cats.includes(c)));
+        }
+
         function openModal(ma) {
             const p = products.find(x => x.ma === ma);
-            if(!p) return;
-
             document.getElementById('m-title').innerText = p.ten;
             document.getElementById('m-price').innerText = p.gia;
-            document.getElementById('m-category').innerText = p.danhMuc.replace(';', ' | ');
-            document.getElementById('main-img-preview').src = `${imgBase}${p.ma}.jpg`;
-
-            // Xử lý thông số kỹ thuật (Tách từng dòng trong Sheet thành thẻ li)
-            const specsContainer = document.getElementById('m-specs');
-            const specLines = p.moTa.split('\n').filter(line => line.trim() !== '');
-            specsContainer.innerHTML = specLines.map(line => `<li>${line.trim()}</li>`).join('');
-
-            // Xử lý Album ảnh phụ (Kiểm tra ảnh 1, 2, 3, 4)
-            const thumbContainer = document.getElementById('thumb-list');
-            let thumbs = `<img src="${imgBase}${p.ma}.jpg" onclick="changePreview('${imgBase}${p.ma}.jpg')">`;
-            [1, 2, 3, 4].forEach(n => {
-                thumbs += `<img src="${imgBase}${p.ma}.${n}.jpg" onerror="this.style.display='none'" onclick="changePreview('${imgBase}${p.ma}.${n}.jpg')">`;
+            document.getElementById('m-cat').innerText = p.cats.join(' | ');
+            document.getElementById('main-preview').src = `${imgBase}${p.ma}.jpg`;
+            document.getElementById('m-specs').innerHTML = p.mota.split('\n').filter(l => l.trim()).map(l => `<li>${l}</li>`).join('');
+            
+            let thumbs = `<img src="${imgBase}${p.ma}.jpg" onclick="document.getElementById('main-preview').src=this.src">`;
+            [1,2,3,4].forEach(n => {
+                thumbs += `<img src="${imgBase}${p.ma}.${n}.jpg" onerror="this.style.display='none'" onclick="document.getElementById('main-preview').src=this.src">`;
             });
-            thumbContainer.innerHTML = thumbs;
-
-            document.getElementById('productModal').style.display = 'flex';
+            document.getElementById('thumb-box').innerHTML = thumbs;
+            document.getElementById('pModal').style.display = 'flex';
         }
 
-        function changePreview(src) {
-            document.getElementById('main-img-preview').src = src;
-        }
-
-        function closeModal() {
-            document.getElementById('productModal').style.display = 'none';
-        }
-
-        window.onclick = (e) => { if(e.target.classList.contains('modal')) closeModal(); }
+        function closeModal() { document.getElementById('pModal').style.display = 'none'; }
 
         init();
     </script>
