@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KGP Telecom - Hệ thống báo giá tự động</title>
+    <title>KGP Telecom - Hệ thống báo giá & Dự án</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tconghanh/mau/main/Data/favicon.ico">
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
@@ -23,7 +20,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Roboto', sans-serif; line-height: 1.6; color: var(--dark-gray); scroll-behavior: smooth; background: #fff; }
 
-        /* --- GIAO DIỆN WEB (SCREEN ONLY) --- */
+        /* HEADER & NAVIGATION */
         header { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: fixed; width: 100%; top: 0; z-index: 1000; }
         nav { max-width: 1300px; margin: auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
         .logo img { height: 50px; }
@@ -31,82 +28,73 @@
         nav a { text-decoration: none; color: var(--dark-gray); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; }
         nav a:hover { color: var(--primary); }
 
-        /* Slider Banner */
+        /* BANNER SLIDER */
         .slider-container { width: 100%; height: 450px; margin-top: 70px; overflow: hidden; position: relative; }
         .slider { display: flex; width: 500%; height: 100%; transition: transform 0.8s ease-in-out; }
         .slide { width: 20%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Sections */
+        /* SECTIONS */
         section { padding: 60px 20px; max-width: 1300px; margin: auto; }
         .section-title { text-align: center; margin-bottom: 30px; }
         .section-title h2 { font-size: 2.2rem; color: var(--primary); font-style: italic; text-transform: uppercase; }
         .underline { width: 70px; height: 4px; background: var(--btn-orange); margin: 10px auto; }
         .content-box { max-width: 900px; margin: auto; text-align: center; background: #fff; padding: 35px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
 
-        /* Product Filter */
+        /* PRODUCT FILTER & GRID */
         .filter-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
         .filter-btn { padding: 8px 18px; border: 1px solid #ddd; background: #fff; border-radius: 20px; cursor: pointer; font-weight: 700; font-size: 0.75rem; transition: 0.3s; text-transform: uppercase; }
         .filter-btn.active, .filter-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-        /* Product Grid */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
         .product-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .product-card img { width: 100%; height: 180px; object-fit: contain; }
-        .product-card h3 { font-size: 0.85rem; margin: 12px 0; height: 40px; overflow: hidden; color: #444; text-transform: uppercase; flex-grow: 1; }
+        .product-card h3 { font-size: 0.85rem; margin: 12px 0; height: 40px; overflow: hidden; text-transform: uppercase; flex-grow: 1; }
         .product-card .price { color: var(--price-red); font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; }
         .btn-add-cart { background: var(--primary); color: white; border: none; padding: 8px; border-radius: 6px; font-weight: 700; cursor: pointer; }
 
-        /* Modal Product Detail */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 15px; backdrop-filter: blur(4px); }
-        .modal-content { background: #fff; width: 100%; max-width: 950px; border-radius: 25px; display: grid; grid-template-columns: 45% 55%; position: relative; overflow: hidden; animation: zoomIn 0.3s; }
+        /* MODAL COMMON (Dùng cho cả SP và Dự án) */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 15px; backdrop-filter: blur(5px); }
+        .modal-content { background: #fff; width: 100%; max-width: 1000px; border-radius: 25px; display: grid; grid-template-columns: 45% 55%; position: relative; overflow: hidden; animation: zoomIn 0.3s; }
         @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: #999; cursor: pointer; z-index: 10; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 35px; color: #999; cursor: pointer; z-index: 10; }
         .modal-left { padding: 25px; border-right: 1px solid #f0f0f0; background: #fff; }
-        .modal-right { padding: 35px; overflow-y: auto; max-height: 85vh; }
-        #main-preview { width: 100%; height: 320px; object-fit: contain; margin-bottom: 20px; }
+        .modal-right { padding: 40px; overflow-y: auto; max-height: 85vh; }
+        .main-preview { width: 100%; height: 350px; object-fit: contain; margin-bottom: 20px; background: #f9f9f9; }
         .thumbs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-        .thumbs img { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 6px; cursor: pointer; object-fit: cover; }
+        .thumbs img { width: 65px; height: 65px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; object-fit: cover; }
         .specs-list { list-style: none; margin-top: 15px; }
-        .specs-list li { position: relative; padding-left: 22px; margin-bottom: 7px; font-size: 0.9rem; color: #555; }
+        .specs-list li { position: relative; padding-left: 25px; margin-bottom: 8px; font-size: 0.95rem; }
         .specs-list li::before { content: '✓'; position: absolute; left: 0; color: #2ecc71; font-weight: 700; }
 
-        /* Cart Icon Floating */
+        /* PROJECTS MARQUEE */
+        #projects { background: #111; color: #fff; max-width: 100%; padding: 60px 0; overflow: hidden; }
+        .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; gap: 20px; }
+        .marquee:hover { animation-play-state: paused; }
+        .proj-card { width: 350px; position: relative; border-radius: 15px; overflow: hidden; cursor: pointer; }
+        .proj-card img { width: 100%; height: 230px; object-fit: cover; filter: brightness(0.7); transition: 0.4s; }
+        .proj-card:hover img { filter: brightness(1); transform: scale(1.05); }
+        .proj-info { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* CART FLOATING */
         .cart-icon { position: fixed; bottom: 30px; right: 30px; background: var(--btn-orange); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1001; font-size: 24px; }
         .cart-count { position: absolute; top: 0; right: 0; background: red; color: white; border-radius: 50%; padding: 2px 7px; font-size: 12px; font-weight: 700; }
-
-        /* Cart Modal */
         .cart-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
         .cart-content { background: white; width: 100%; max-width: 800px; padding: 30px; border-radius: 20px; max-height: 90vh; overflow-y: auto; }
         .cart-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
         .cart-table th, .cart-table td { border-bottom: 1px solid #eee; padding: 12px; text-align: left; }
-        .btn-print-action { background: #27ae60; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; width: 100%; }
 
-        /* Projects Marquee */
-        #projects { background: #111; color: #fff; max-width: 100%; padding: 60px 0; overflow: hidden; }
-        .marquee { display: flex; width: max-content; animation: scroll 40s linear infinite; gap: 20px; }
-        .proj-card { width: 350px; position: relative; border-radius: 15px; overflow: hidden; }
-        .proj-card img { width: 100%; height: 230px; object-fit: cover; filter: brightness(0.7); transition: 0.4s; }
-        .proj-info { position: absolute; bottom: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-        /* --- PHẦN IN BÁO GIÁ (CHỈ HIỆN KHI IN) --- */
+        /* PRINT STYLES */
         #print-section { display: none; }
         @media print {
             body * { visibility: hidden; }
             #print-section, #print-section * { visibility: visible; }
             #print-section { display: block !important; position: absolute; left: 0; top: 0; width: 100%; background: white; color: black; }
             @page { size: A4; margin: 10mm; }
-            table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+            table { width: 100%; border-collapse: collapse; }
             th, td { border: 1px solid black !important; padding: 6px; font-size: 12px; }
             .no-print { display: none !important; }
-            .print-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-            .print-logo { width: 220px; }
-            .print-title { text-align: center; color: var(--primary); font-size: 26px; font-weight: 700; margin: 15px 0; }
-            .company-name-red { color: red; font-weight: 700; font-size: 18px; text-align: right; }
-            .stamp-container { position: relative; height: 120px; margin-top: 10px; }
-            .stamp-img { width: 160px; position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1; }
         }
 
         footer { background: #1a252f; color: #bdc3c7; padding: 60px 20px; }
@@ -180,12 +168,12 @@
         🛒 <span class="cart-count" id="cart-count">0</span>
     </div>
 
-    <!-- Modal Chi tiết Sản phẩm -->
+    <!-- MODAL SẢN PHẨM -->
     <div id="pModal" class="modal no-print" onclick="if(event.target==this) closeModal()">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <div class="modal-left">
-                <img id="main-preview" src="">
+                <img id="main-preview" class="main-preview" src="">
                 <div class="thumbs" id="thumb-box"></div>
             </div>
             <div class="modal-right">
@@ -200,113 +188,82 @@
         </div>
     </div>
 
+    <!-- MODAL DỰ ÁN -->
+    <div id="projModal" class="modal no-print" onclick="if(event.target==this) this.style.display='none'">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('projModal').style.display='none'">&times;</span>
+            <div class="modal-left">
+                <img id="pj-main-preview" class="main-preview" src="">
+                <div class="thumbs" id="pj-thumb-box"></div>
+            </div>
+            <div class="modal-right">
+                <div id="pj-cat" style="color:var(--primary); font-weight:700; font-size:0.8rem; text-transform: uppercase;"></div>
+                <h2 id="pj-title" style="margin:10px 0; color:#1a1a1a"></h2>
+                <div style="color:var(--btn-orange); font-weight:700; font-size:0.9rem; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px;">📄 Nội dung dự án</div>
+                <div id="pj-content" style="white-space: pre-line; font-size: 0.95rem; color: #555;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Giỏ hàng -->
     <div id="cartModal" class="cart-modal no-print" onclick="if(event.target==this) this.style.display='none'">
         <div class="cart-content">
             <h2 style="text-align:center; color:var(--primary)">GIỎ HÀNG CỦA BẠN</h2>
             <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
-                        <th>Xóa</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Sản phẩm</th><th>Số lượng</th><th>Thành tiền</th><th>Xóa</th></tr></thead>
                 <tbody id="cart-items"></tbody>
             </table>
             <div style="text-align: right; margin-top: 20px;">
                 <h3 style="margin-bottom:20px">Tổng tiền: <span id="cart-total-web" style="color:var(--price-red)">0đ</span></h3>
-                <button class="btn-print-action" onclick="preparePrint()">IN BẢNG BÁO GIÁ</button>
+                <button onclick="preparePrint()" style="background: #27ae60; color: white; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; width: 100%;">IN BẢNG BÁO GIÁ</button>
             </div>
         </div>
     </div>
 
-    <!-- PHẦN IN BÁO GIÁ (ẨN TRÊN WEB) -->
+    <!-- PHẦN IN (ẨN) -->
     <div id="print-section">
         <div class="print-header">
             <img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" class="print-logo">
             <div style="text-align: right;">
-                <div class="company-name-red">CÔNG TY TNHH KHANG GIA PHÚC</div>
+                <div style="color:red; font-weight:700; font-size:18px">CÔNG TY TNHH KHANG GIA PHÚC</div>
                 <div style="color:blue; text-decoration: underline; font-size:12px">www.khanggiaphuc.com</div>
             </div>
         </div>
-
         <div class="print-title">BẢNG BÁO GIÁ</div>
-        
         <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px;">
             <div>Số: <b id="print-no">...</b></div>
             <div>TP.HCM, Ngày <span id="print-date">...</span></div>
         </div>
-        <p style="font-size: 12px; margin-bottom: 10px;">Trân trọng gửi tới quý khách bảng giá như sau:</p>
-
         <table>
             <thead>
-                <tr style="background: #BDD7EE;">
-                    <th>STT</th>
-                    <th style="width: 45%;">Thiết bị và dịch vụ</th>
-                    <th>Hình ảnh</th>
-                    <th>ĐVT</th>
-                    <th>SL</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                </tr>
+                <tr style="background: #BDD7EE;"><th>STT</th><th style="width: 45%;">Thiết bị và dịch vụ</th><th>Hình ảnh</th><th>ĐVT</th><th>SL</th><th>Đơn giá</th><th>Thành tiền</th></tr>
             </thead>
             <tbody id="print-table-body"></tbody>
             <tfoot>
-                <tr>
-                    <td colspan="6" style="text-align: right; font-weight: 700;">Tổng cộng:</td>
-                    <td id="p-subtotal" style="text-align: right; font-weight: 700;"></td>
-                </tr>
-                <tr>
-                    <td colspan="6" style="text-align: right; font-weight: 700;">VAT (10%):</td>
-                    <td id="p-vat" style="text-align: right; font-weight: 700;"></td>
-                </tr>
-                <tr style="background: #f2f2f2;">
-                    <td colspan="6" style="text-align: right; font-weight: 700;">TỔNG CỘNG SAU VAT:</td>
-                    <td id="p-grandtotal" style="text-align: right; font-weight: 700;"></td>
-                </tr>
+                <tr><td colspan="6" style="text-align: right; font-weight: 700;">Tổng cộng:</td><td id="p-subtotal" style="text-align: right;"></td></tr>
+                <tr><td colspan="6" style="text-align: right; font-weight: 700;">VAT (10%):</td><td id="p-vat" style="text-align: right;"></td></tr>
+                <tr style="background: #f2f2f2;"><td colspan="6" style="text-align: right; font-weight: 700;">TỔNG CỘNG SAU VAT:</td><td id="p-grandtotal" style="text-align: right;"></td></tr>
             </tfoot>
         </table>
-
         <p style="font-style: italic; margin-top: 5px; font-size: 12px;">Bằng chữ: <b id="p-word">...</b></p>
-
-        <div style="margin-top: 15px; border: 1px solid #ddd; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-size: 11px; line-height: 1.5;">
-                <b style="text-decoration: underline;">Thông tin thanh toán:</b><br>
-                - Đơn vị thụ hưởng: <span style="color:red; font-weight:700">CÔNG TY TNHH KHANG GIA PHÚC</span><br>
-                - Ngân hàng: Techcombank | Số TK: 1793418868<br>
-                - Nội dung: Thanh toán báo giá số <span id="print-no-footer" style="font-weight:700">...</span>
+        <div style="margin-top: 15px; border: 1px solid #ddd; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+            <div>
+                <b>Thông tin thanh toán:</b><br>- Đơn vị thụ hưởng: <span style="color:red; font-weight:700">CÔNG TY TNHH KHANG GIA PHÚC</span><br>- Ngân hàng: Techcombank | TK: 1793418868<br>- Nội dung: Thanh toán báo giá số <span id="print-no-footer" style="font-weight:700">...</span>
             </div>
-            <div style="text-align: center;">
-                <img id="qr-payment" src="" style="width: 100px; border:1px solid #eee">
-                <div style="font-size: 9px;">Mã QR thanh toán</div>
-            </div>
+            <img id="qr-payment" src="" style="width: 100px;">
         </div>
-
         <div style="display: grid; grid-template-columns: 1fr 1fr; text-align: center; margin-top: 30px; font-size: 13px;">
-            <div>
-                <b>CÔNG TY TNHH KHANG GIA PHÚC</b>
-                <div class="stamp-container">
-                    <img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/dau.png" class="stamp-img" onerror="this.style.display='none'">
-                </div>
-            </div>
-            <div>
-                <b>XÁC NHẬN CỦA KHÁCH HÀNG</b>
-            </div>
+            <div><b>CÔNG TY TNHH KHANG GIA PHÚC</b><div style="height:100px; position:relative;"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/dau.png" style="width:160px; position:absolute; top:10px; left:50%; transform:translateX(-50%); opacity:0.8;" onerror="this.style.display='none'"></div></div>
+            <div><b>XÁC NHẬN CỦA KHÁCH HÀNG</b></div>
         </div>
     </div>
 
     <footer class="no-print">
         <div class="footer-grid">
-            <div class="footer-col">
-                <img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" class="footer-logo">
-                <div id="f1"></div>
-            </div>
+            <div class="footer-col"><img src="https://raw.githubusercontent.com/tconghanh/mau/main/Data/logo.jpg" class="footer-logo"><div id="f1"></div></div>
             <div class="footer-col"><h4>Địa chỉ</h4><div id="f2"></div></div>
             <div class="footer-col"><h4>Hỗ trợ</h4><div id="f3"></div></div>
         </div>
-        <p style="text-align:center; margin-top: 40px; font-size: 0.8rem; opacity: 0.5;">© 2026 KGP Telecom. All rights reserved.</p>
     </footer>
 
     <script>
@@ -315,6 +272,7 @@
         const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
         let products = [];
+        let allProjects = [];
         let cart = [];
         let curSlide = 0;
 
@@ -330,7 +288,7 @@
                 document.getElementById('f2').innerText = home[5].c[1].v;
                 document.getElementById('f3').innerText = home[6].c[1].v;
 
-                // 2. SẢN PHẨM (A:Mã, B:Tên, C:Danh mục, D:Giá, E:Mô tả)
+                // 2. SẢN PHẨM
                 const resP = await fetch(`${base}&sheet=San_Pham`);
                 const prodRows = JSON.parse((await resP.text()).substring(47).slice(0, -2)).table.rows;
                 products = prodRows.slice(1).map(r => ({
@@ -353,35 +311,40 @@
                 });
                 renderProducts(products);
 
-                // 3. DỰ ÁN (A: Mã, B: Tên, C: Hạng mục, D: Năm)
+                // 3. DỰ ÁN
                 const resD = await fetch(`${base}&sheet=Du_An`);
                 const projRows = JSON.parse((await resD.text()).substring(47).slice(0, -2)).table.rows;
                 let projHTML = '';
-                projRows.slice(1).forEach(r => {
-                    if(!r.c || !r.c[0]) return;
-                    const maDA = r.c[0].v.toString().trim();
+                allProjects = projRows.slice(1).map(r => ({
+                    ma: r.c[0] ? r.c[0].v.toString().trim() : '',
+                    ten: r.c[1] ? r.c[1].v : '',
+                    hangmuc: r.c[2] ? r.c[2].v : '',
+                    noidung: r.c[3] ? r.c[3].v : '',
+                    nam: r.c[4] ? r.c[4].v : ''
+                })).filter(x => x.ma !== '');
+
+                allProjects.forEach(pj => {
                     projHTML += `
-                        <div class="proj-card">
-                            <img src="${imgBase}${maDA}.jpg" onerror="this.src='https://via.placeholder.com/400x230?text=${maDA}'">
+                        <div class="proj-card" onclick="openProjModal('${pj.ma}')">
+                            <img src="${imgBase}${pj.ma}.jpg" onerror="this.src='https://via.placeholder.com/400x230'">
                             <div class="proj-info">
-                                <h4 style="margin:0">${r.c[1] ? r.c[1].v : ''}</h4>
-                                <p style="font-size:0.75rem; margin:0">${r.c[2] ? r.c[2].v : ''} | ${r.c[3] ? r.c[3].v : ''}</p>
+                                <h4 style="margin:0">${pj.ten}</h4>
+                                <p style="font-size:0.75rem; margin:0">${pj.hangmuc} | ${pj.nam}</p>
                             </div>
                         </div>`;
                 });
                 document.getElementById('project-list').innerHTML = projHTML + projHTML;
 
-                // Slider Auto
                 setInterval(() => {
                     curSlide = (curSlide + 1) % 5;
                     document.getElementById('slider').style.transform = `translateX(-${curSlide * 20}%)`;
                 }, 4000);
 
                 document.getElementById('loader').style.display = 'none';
-            } catch (e) { console.error("Lỗi:", e); }
+            } catch (e) { console.error(e); }
         }
 
-        // --- HÀM XỬ LÝ SẢN PHẨM & LỌC ---
+        // --- SẢN PHẨM ---
         function renderProducts(data) {
             document.getElementById('product-grid').innerHTML = data.map(p => `
                 <div class="product-card">
@@ -392,22 +355,19 @@
                 </div>
             `).join('');
         }
-
         function filterProducts(c, btn) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             renderProducts(c === 'TẤT CẢ' ? products : products.filter(p => p.cats.includes(c)));
         }
 
-        // --- HÀM GIỎ HÀNG ---
+        // --- GIỎ HÀNG ---
         function addToCart(ma) {
             const p = products.find(x => x.ma === ma);
             const exists = cart.find(x => x.ma === ma);
             if (exists) { exists.qty++; } else { cart.push({...p, qty: 1}); }
             updateCartUI();
-            alert(`Đã thêm ${p.ten} vào giỏ!`);
         }
-
         function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.reduce((s, i) => s + i.qty, 0);
             const tbody = document.getElementById('cart-items');
@@ -415,23 +375,15 @@
             tbody.innerHTML = cart.map((item, index) => {
                 const sub = item.gia * item.qty;
                 total += sub;
-                return `
-                    <tr>
-                        <td style="font-size:0.85rem"><b>${item.ten}</b></td>
-                        <td><input type="number" value="${item.qty}" min="1" style="width:45px" onchange="updateQty(${index}, this.value)"></td>
-                        <td>${sub.toLocaleString()}đ</td>
-                        <td><button onclick="removeItem(${index})" style="border:none; background:none; cursor:pointer">❌</button></td>
-                    </tr>
-                `;
+                return `<tr><td><b>${item.ten}</b></td><td><input type="number" value="${item.qty}" min="1" style="width:40px" onchange="updateQty(${index}, this.value)"></td><td>${sub.toLocaleString()}đ</td><td><button onclick="removeItem(${index})">❌</button></td></tr>`;
             }).join('');
             document.getElementById('cart-total-web').innerText = total.toLocaleString() + 'đ';
         }
-
-        function updateQty(index, val) { cart[index].qty = parseInt(val); updateCartUI(); }
-        function removeItem(index) { cart.splice(index, 1); updateCartUI(); }
+        function updateQty(i, v) { cart[i].qty = parseInt(v); updateCartUI(); }
+        function removeItem(i) { cart.splice(i, 1); updateCartUI(); }
         function openCart() { document.getElementById('cartModal').style.display = 'flex'; }
 
-        // --- HÀM MODAL CHI TIẾT ---
+        // --- MODAL SẢN PHẨM ---
         function openModal(ma) {
             const p = products.find(x => x.ma === ma);
             document.getElementById('m-title').innerText = p.ten;
@@ -442,69 +394,55 @@
             document.getElementById('btn-modal-add').onclick = () => addToCart(p.ma);
             
             let thumbs = `<img src="${imgBase}${p.ma}.jpg" onclick="document.getElementById('main-preview').src=this.src">`;
-            [1,2,3,4].forEach(n => {
-                thumbs += `<img src="${imgBase}${p.ma}.${n}.jpg" onerror="this.style.display='none'" onclick="document.getElementById('main-preview').src=this.src">`;
-            });
+            [1,2,3,4].forEach(n => thumbs += `<img src="${imgBase}${p.ma}.${n}.jpg" onerror="this.style.display='none'" onclick="document.getElementById('main-preview').src=this.src">`);
             document.getElementById('thumb-box').innerHTML = thumbs;
             document.getElementById('pModal').style.display = 'flex';
         }
         function closeModal() { document.getElementById('pModal').style.display = 'none'; }
 
-        // --- HÀM IN BÁO GIÁ ---
+        // --- MODAL DỰ ÁN ---
+        function openProjModal(ma) {
+            const pj = allProjects.find(x => x.ma === ma);
+            if(!pj) return;
+            document.getElementById('pj-title').innerText = pj.ten;
+            document.getElementById('pj-cat').innerText = pj.hangmuc + " | " + pj.nam;
+            document.getElementById('pj-content').innerText = pj.noidung;
+            document.getElementById('pj-main-preview').src = `${imgBase}${pj.ma}.jpg`;
+
+            let thumbs = `<img src="${imgBase}${pj.ma}.jpg" onclick="document.getElementById('pj-main-preview').src=this.src">`;
+            [1,2,3,4].forEach(n => thumbs += `<img src="${imgBase}${pj.ma}.${n}.jpg" onerror="this.style.display='none'" onclick="document.getElementById('pj-main-preview').src=this.src">`);
+            document.getElementById('pj-thumb-box').innerHTML = thumbs;
+            document.getElementById('projModal').style.display = 'flex';
+        }
+
+        // --- IN BÁO GIÁ ---
         function preparePrint() {
-            if (cart.length === 0) return alert("Giỏ hàng đang trống!");
-            
-            // 1. Tạo số báo giá DDMMYY
+            if (cart.length === 0) return;
             const now = new Date();
-            const d = String(now.getDate()).padStart(2, '0');
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            const y = String(now.getFullYear()).slice(-2);
-            const quoteID = `${d}${m}${y}/BG-KGP`;
+            const qID = `${String(now.getDate()).padStart(2,'0')}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getFullYear()).slice(-2)}/BG-KGP`;
+            document.getElementById('print-no').innerText = qID;
+            document.getElementById('print-no-footer').innerText = qID;
+            document.getElementById('print-date').innerText = now.toLocaleDateString('vi-VN');
 
-            document.getElementById('print-no').innerText = quoteID;
-            document.getElementById('print-no-footer').innerText = quoteID;
-            document.getElementById('print-date').innerText = `${d}/${m}/${now.getFullYear()}`;
-
-            // 2. Đổ dữ liệu vào bảng in
-            const tbody = document.getElementById('print-table-body');
-            let subtotal = 0;
-            tbody.innerHTML = cart.map((item, i) => {
-                const totalItem = item.gia * item.qty;
-                subtotal += totalItem;
-                return `
-                    <tr>
-                        <td style="text-align:center">${i + 1}</td>
-                        <td style="white-space: pre-line; text-align:left;"><b>${item.ten}</b>\n${item.mota}</td>
-                        <td style="text-align:center"><img src="${imgBase}${item.ma}.jpg" style="width:60px" onerror="this.style.display='none'"></td>
-                        <td style="text-align:center">bộ</td>
-                        <td style="text-align:center">${item.qty}</td>
-                        <td style="text-align:right">${item.gia.toLocaleString()}</td>
-                        <td style="text-align:right">${totalItem.toLocaleString()}</td>
-                    </tr>
-                `;
+            let sub = 0;
+            document.getElementById('print-table-body').innerHTML = cart.map((item, i) => {
+                const t = item.gia * item.qty; sub += t;
+                return `<tr><td style="text-align:center">${i+1}</td><td style="text-align:left"><b>${item.ten}</b>\n${item.mota}</td><td style="text-align:center"><img src="${imgBase}${item.ma}.jpg" style="width:50px"></td><td style="text-align:center">bộ</td><td style="text-align:center">${item.qty}</td><td style="text-align:right">${item.gia.toLocaleString()}</td><td style="text-align:right">${t.toLocaleString()}</td></tr>`;
             }).join('');
 
-            const vat = subtotal * 0.1;
-            const grandTotal = subtotal + vat;
-
-            document.getElementById('p-subtotal').innerText = subtotal.toLocaleString();
-            document.getElementById('p-vat').innerText = vat.toLocaleString();
-            document.getElementById('p-grandtotal').innerText = grandTotal.toLocaleString();
-            document.getElementById('p-word').innerText = docSoTien(grandTotal);
-
-            // 3. QR Code VietQR
-            const info = encodeURIComponent(`Thanh toan bao gia ${quoteID}`);
-            document.getElementById('qr-payment').src = `https://img.vietqr.io/image/techcombank-1793418868-compact.png?amount=${grandTotal}&addInfo=${info}`;
-
+            const v = sub * 0.1, gt = sub + v;
+            document.getElementById('p-subtotal').innerText = sub.toLocaleString();
+            document.getElementById('p-vat').innerText = v.toLocaleString();
+            document.getElementById('p-grandtotal').innerText = gt.toLocaleString();
+            document.getElementById('p-word').innerText = docSoTien(gt);
+            document.getElementById('qr-payment').src = `https://img.vietqr.io/image/techcombank-1793418868-compact.png?amount=${gt}&addInfo=Thanh toan bao gia ${qID}`;
             setTimeout(() => { window.print(); }, 800);
         }
 
-        // --- HÀM ĐỌC SỐ TIỀN ---
         function docSoTien(so) {
             const chu = ["không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
             function doc3(n) {
-                let r = "";
-                let tr = Math.floor(n / 100), ch = Math.floor((n % 100) / 10), dv = n % 10;
+                let r = "", tr = Math.floor(n/100), ch = Math.floor((n%100)/10), dv = n%10;
                 if (tr > 0) r += chu[tr] + " trăm ";
                 if (ch === 0 && dv > 0) r += "lẻ ";
                 if (ch === 1) r += "mười ";
