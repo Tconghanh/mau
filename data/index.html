@@ -3,127 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KGP Professional Dashboard</title>
+    <title>KGP Professional Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; }
-        .sidebar-item.active { @apply bg-blue-600 text-white shadow-lg shadow-blue-200; }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; }
+        .sidebar-item.active { @apply bg-blue-600 text-white shadow-lg; }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
     </style>
 </head>
 <body class="flex min-h-screen">
 
-    <aside class="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col">
-        <div class="p-6">
-            <img src="https://www.khanggiaphuc.com/data/logo.jpg" alt="Logo" class="h-10 rounded-lg">
-            <p class="text-[10px] font-bold text-blue-600 mt-2 uppercase tracking-tighter">Công nghệ trong tầm tay</p>
+    <div id="addModal" class="modal flex items-center justify-center">
+        <div class="bg-white rounded-3xl w-full max-w-lg p-6 shadow-2xl scale-95 transition-transform">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-800">Thêm Sản phẩm mới</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 text-2xl">&times;</button>
+            </div>
+            <iframe src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Đang tải biểu mẫu...</iframe>
         </div>
-        
-        <nav class="flex-1 px-4 space-y-2">
-            <button onclick="loadData('0')" class="sidebar-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 transition">
-                <i class="fa-solid fa-house"></i> Tổng quan
+    </div>
+
+    <aside class="w-64 bg-slate-900 text-slate-300 hidden md:flex flex-col">
+        <div class="p-8">
+            <h1 class="text-white font-black text-xl tracking-tighter">KHANG GIA PHÚC</h1>
+            <p class="text-[9px] text-blue-400 font-bold uppercase tracking-widest mt-1">Admin Dashboard</p>
+        </div>
+        <nav class="flex-1 px-4 space-y-1">
+            <button onclick="loadData('0')" class="sidebar-item active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition">
+                <i class="fa-solid fa-layer-group"></i> Tổng quan
             </button>
-            <button onclick="loadData('620957187')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 transition">
-                <i class="fa-solid fa-shield-halved"></i> Bảo hành
+            <button onclick="loadData('895747298')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition">
+                <i class="fa-solid fa-box-open"></i> Kho sản phẩm
             </button>
-            <button onclick="loadData('895747298')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 transition">
-                <i class="fa-solid fa-box"></i> Sản phẩm
+            <button onclick="loadData('620957187')" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Bảo hành
             </button>
-            <hr class="my-4 border-slate-100">
-            <a href="https://docs.google.com/spreadsheets/d/18ce9-AdNPMv_CPKCKQqRD4k0jTw1Hv-xZLF_Q4ZaubE/edit" target="_blank" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-orange-600 hover:bg-orange-50 transition">
-                <i class="fa-solid fa-pen-to-square"></i> Quản trị dữ liệu
-            </a>
         </nav>
     </aside>
 
-    <main class="flex-1 flex flex-col">
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10">
-            <h2 id="page-title" class="font-bold text-slate-800 uppercase tracking-wide">Bảng điều khiển</h2>
-            <div class="flex items-center gap-4">
-                <span class="text-xs font-medium text-slate-500">Xin chào, Admin</span>
-                <div class="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">K</div>
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8">
+            <div class="flex items-center bg-slate-100 rounded-2xl px-4 py-2 w-96">
+                <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2"></i>
+                <input type="text" id="searchInput" onkeyup="searchData()" placeholder="Tìm kiếm nhanh..." class="bg-transparent border-none outline-none text-sm w-full">
             </div>
+            <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-200 transition flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> THÊM MỚI
+            </button>
         </header>
 
-        <div class="p-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm card-hover">
-                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Hệ thống</p>
-                    <p class="text-2xl font-black text-slate-800 mt-1">Hoạt động</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm card-hover">
-                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Dữ liệu</p>
-                    <p class="text-2xl font-black text-blue-600 mt-1">Real-time</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm card-hover">
-                    <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Bảo mật</p>
-                    <p class="text-2xl font-black text-green-600 mt-1">An toàn</p>
-                </div>
+        <div id="data-container" class="flex-1 overflow-y-auto p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 content-start">
             </div>
-
-            <div id="data-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="col-span-full flex justify-center py-20">
-                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-600"></i>
-                </div>
-            </div>
-        </div>
     </main>
 
     <script>
-        // CẤU HÌNH: Thay ID file của bạn và xuất bản (Publish to Web) dưới dạng CSV
         const SHEET_ID = '18ce9-AdNPMv_CPKCKQqRD4k0jTw1Hv-xZLF_Q4ZaubE';
-        
+        let currentData = [];
+
         async function loadData(gid) {
             const container = document.getElementById('data-container');
-            const title = document.getElementById('page-title');
-            container.innerHTML = `<div class="col-span-full flex justify-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-4xl text-blue-600"></i></div>`;
+            container.innerHTML = `<div class="col-span-full text-center py-20"><i class="fa-solid fa-spinner fa-spin text-3xl text-blue-600"></i></div>`;
             
             try {
-                // Sử dụng định dạng CSV để lấy dữ liệu nhanh và không cần API Key
                 const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
                 const response = await fetch(url);
                 const data = await response.text();
-                const rows = data.split('\n').map(row => row.split(','));
-
-                // Header là hàng đầu tiên
-                const headers = rows[0];
-                const content = rows.slice(1);
-
-                title.innerText = gid === '0' ? 'Tổng quan hệ thống' : (gid === '895747298' ? 'Danh mục sản phẩm' : 'Quản lý bảo hành');
-
-                let html = '';
-                content.forEach(row => {
-                    if(row.length < 2) return; // Bỏ qua hàng trống
-                    html += `
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm card-hover relative overflow-hidden">
-                            <div class="absolute top-0 right-0 p-3 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-bl-xl uppercase">
-                                ${row[0] || 'KGP'}
-                            </div>
-                            <h3 class="font-bold text-slate-800 text-lg mb-2">${row[1] || 'Chưa có tên'}</h3>
-                            <div class="space-y-2 text-sm text-slate-600">
-                                <p><i class="fa-solid fa-tag w-5"></i> <b>Loại:</b> ${row[2] || '...'}</p>
-                                <p><i class="fa-solid fa-clock w-5"></i> <b>Cập nhật:</b> ${row[3] || 'Vừa xong'}</p>
-                            </div>
-                            <button class="mt-4 w-full py-2 bg-slate-50 hover:bg-blue-600 hover:text-white text-slate-600 rounded-lg text-xs font-bold transition">
-                                XEM CHI TIẾT
-                            </button>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
-
-            } catch (error) {
-                container.innerHTML = `<p class="col-span-full text-center text-red-500 font-bold">Lỗi tải dữ liệu. Hãy đảm bảo bạn đã "Xuất bản lên web" (Publish to Web) file Sheet.</p>`;
+                
+                // Parse CSV đơn giản
+                currentData = data.split('\n').slice(1).map(row => row.split(','));
+                renderCards(currentData);
+            } catch (e) {
+                container.innerHTML = `<p class="col-span-full text-center text-red-500">Lỗi kết nối dữ liệu.</p>`;
             }
         }
 
-        // Tải trang mặc định
+        function renderCards(data) {
+            const container = document.getElementById('data-container');
+            container.innerHTML = data.map(row => {
+                if(row.length < 2) return '';
+                return `
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-bold rounded-full uppercase">${row[0]}</span>
+                            <i class="fa-solid fa-ellipsis-vertical text-slate-300 group-hover:text-slate-600 cursor-pointer"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-1">${row[1]}</h4>
+                        <p class="text-sm text-slate-500 mb-4 line-clamp-2">${row[2] || 'Không có mô tả'}</p>
+                        <div class="pt-4 border-t border-slate-50 flex justify-between items-center text-xs font-bold">
+                            <span class="text-slate-400 font-medium">CẬP NHẬT: ${row[3] || '---'}</span>
+                            <button class="text-blue-600 hover:underline">CHI TIẾT</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function searchData() {
+            const val = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = currentData.filter(row => row.join(' ').toLowerCase().includes(val));
+            renderCards(filtered);
+        }
+
+        function openModal() { document.getElementById('addModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('addModal').style.display = 'none'; }
+
         loadData('0');
 
-        // Logic active sidebar
         document.querySelectorAll('.sidebar-item').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
