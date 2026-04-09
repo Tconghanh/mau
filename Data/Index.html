@@ -1,1 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KGP Dashboard | Quản Trị Hệ Thống</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #1e293b; overflow-x: hidden; }
+
+        /* Tối ưu hiệu ứng Glassmorphism */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        /* Tab hoạt động mượt mà hơn */
+        .tab-link {
+            @apply px-5 py-3 rounded-xl font-bold text-xs transition-all duration-300 flex items-center gap-2 whitespace-nowrap uppercase tracking-wider border border-transparent;
+            color: #64748b;
+        }
+        .tab-link:hover { @apply bg-slate-100 text-slate-900; }
+        .tab-link.active {
+            @apply bg-blue-600 text-white shadow-lg shadow-blue-200 scale-105;
+        }
+
+        /* Container cho Iframe */
+        .main-workspace {
+            height: calc(100vh - 260px);
+            min-height: 500px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; border-radius: 20px; }
+
+        /* Nút Upload Mobile */
+        .btn-upload {
+            @apply fixed bottom-6 right-6 z-[100] bg-orange-500 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-xl hover:bg-orange-600 hover:scale-110 transition-all duration-300 md:hidden;
+            animation: pulse-orange 2s infinite;
+        }
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.6); }
+            70% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+        }
+
+        /* Ẩn thanh cuộn nhưng vẫn cuộn được */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+
+    <a href="https://drive.google.com/drive/folders/1dn5E5YMSmYHoq1IEJ9l84oVQeLaOJvFM" target="_blank" class="btn-upload">
+        <i class="fa-solid fa-plus"></i>
+    </a>
+
+    <header class="glass-nav sticky top-0 z-50">
+        <div class="max-w-[1536px] mx-auto px-4 lg:px-6">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-4">
+                    <img src="https://www.khanggiaphuc.com/data/logo.jpg" alt="Logo KGP" class="h-10 w-auto rounded-lg">
+                    <div>
+                        <h1 class="text-base font-extrabold text-slate-900 leading-tight tracking-tight">KHANG GIA PHÚC</h1>
+                        <p class="text-[9px] font-bold text-blue-600 uppercase tracking-widest">Hệ thống Quản trị Nội bộ</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <a href="https://drive.google.com/drive/u/0/my-drive" target="_blank" class="hidden md:flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-black transition shadow-md">
+                        <i class="fa-solid fa-hard-drive"></i> Google Drive
+                    </a>
+                    <button id="auth-btn" onclick="toggleLogin()" class="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white font-bold text-xs text-slate-600 hover:bg-slate-50 transition">
+                        <i id="auth-icon" class="fa-brands fa-google"></i> <span id="auth-text">Đăng nhập</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pb-3 overflow-hidden">
+                <nav class="flex overflow-x-auto no-scrollbar gap-2 scroll-smooth">
+                    <button onclick="switchTab(this, '0')" class="tab-link active"><i class="fa-solid fa-chart-line"></i> Tổng quan</button>
+                    <button onclick="switchTab(this, '620957187')" class="tab-link"><i class="fa-solid fa-shield-check"></i> Bảo hành</button>
+                    <button onclick="switchTab(this, '895747298')" class="tab-link"><i class="fa-solid fa-boxes-stacked"></i> Sản phẩm</button>
+                    <button onclick="switchTab(this, '809858153')" class="tab-link"><i class="fa-solid fa-address-book"></i> Khách hàng</button>
+                    <button onclick="switchTab(this, 'drive')" class="tab-link"><i class="fa-solid fa-folder-tree"></i> Kho dữ liệu</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1536px] mx-auto px-4 lg:px-6 py-6">
+        <div id="login-alert" class="hidden mb-4 p-4 bg-blue-50 border border-blue-200 rounded-xl text-blue-700 text-sm font-medium">
+            <i class="fa-solid fa-circle-info mr-2"></i> Lưu ý: Bạn cần đăng nhập đúng Email được cấp quyền để chỉnh sửa dữ liệu.
+        </div>
+
+        <div class="main-workspace" data-aos="zoom-in-up">
+            <div id="loader" class="loader text-blue-600">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl"></i>
+            </div>
+            <iframe id="main-frame" src="https://docs.google.com/spreadsheets/d/18ce9-AdNPMv_CPKCKQqRD4k0jTw1Hv-xZLF_Q4ZaubE/edit?rm=minimal&gid=0"></iframe>
+        </div>
+    </main>
+
+    <footer class="max-w-[1536px] mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-slate-200 mt-10">
+        <div class="text-[11px] font-bold text-slate-500 tracking-wide uppercase">
+            © 2026 KHANG GIA PHÚC | Công nghệ trong tầm tay
+        </div>
+        <div class="flex gap-6 text-slate-400">
+            <a href="tel:0844900099" class="hover:text-blue-600 transition"><i class="fa-solid fa-phone mr-1"></i> 0844.900.099</a>
+            <a href="https://khanggiaphuc.com" target="_blank" class="hover:text-blue-600 transition"><i class="fa-solid fa-globe mr-1"></i> Website</a>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 600, once: true });
+
+        const frame = document.getElementById('main-frame');
+        const loader = document.getElementById('loader');
+        const authBtn = document.getElementById('auth-btn');
+        const loginAlert = document.getElementById('login-alert');
+
+        const DRIVE_URL = "https://drive.google.com/embeddedfolderview?id=1dn5E5YMSmYHoq1IEJ9l84oVQeLaOJvFM#grid";
+        const SHEET_BASE = "https://docs.google.com/spreadsheets/d/18ce9-AdNPMv_CPKCKQqRD4k0jTw1Hv-xZLF_Q4ZaubE/edit?rm=minimal";
+
+        // Kiểm tra trạng thái đăng nhập
+        let isLoggedIn = localStorage.getItem('kgp_status') === 'logged_in';
+
+        function updateAuthUI() {
+            if(isLoggedIn) {
+                authBtn.innerHTML = `<i class="fa-solid fa-user-check text-green-500"></i> Đang Online`;
+                authBtn.classList.replace('text-slate-600', 'text-green-600');
+                loginAlert.classList.add('hidden');
+            } else {
+                authBtn.innerHTML = `<i class="fa-brands fa-google"></i> Đăng nhập`;
+                authBtn.classList.replace('text-green-600', 'text-slate-600');
+                loginAlert.classList.remove('hidden');
+            }
+        }
+
+        function toggleLogin() {
+            if(!isLoggedIn) {
+                // Mở cửa sổ đăng nhập Google thực tế
+                const authWindow = window.open('https://accounts.google.com/ServiceLogin', 'authWindow', 'width=500,height=600');
+                const timer = setInterval(() => {
+                    if (authWindow.closed) {
+                        clearInterval(timer);
+                        isLoggedIn = true;
+                        localStorage.setItem('kgp_status', 'logged_in');
+                        updateAuthUI();
+                        frame.src = frame.src; // Refresh lại iframe để nhận session mới
+                    }
+                }, 1000);
+            } else {
+                if(confirm("Bạn muốn đăng xuất khỏi hệ thống quản trị?")) {
+                    isLoggedIn = false;
+                    localStorage.removeItem('kgp_status');
+                    updateAuthUI();
+                    window.location.href = "https://ht25vn.com";
+                }
+            }
+        }
+
+        function switchTab(btn, target) {
+            // Cập nhật trạng thái Tab
+            document.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Hiệu ứng Loading
+            loader.style.display = 'block';
+            frame.style.opacity = '0.1';
+
+            // Thay đổi nguồn dữ liệu
+            const newSrc = (target === 'drive') ? DRIVE_URL : `${SHEET_BASE}&gid=${target}`;
+            frame.src = newSrc;
+
+            frame.onload = () => {
+                loader.style.display = 'none';
+                frame.style.opacity = '1';
+                frame.style.transition = 'opacity 0.4s ease';
+            };
+
+            // Tự động cuộn tab vào giữa màn hình trên mobile
+            btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+
+        // Khởi tạo giao diện
+        updateAuthUI();
+    </script>
+</body>
+</html>
 
