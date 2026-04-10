@@ -3,79 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KGP Quản Trị Hệ Thống | GitHub Integration</title>
+    <title>KGP Dashboard | Hệ Thống Quản Trị</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; }
-        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
-        .workspace-card { height: calc(100vh - 280px); min-height: 550px; background: white; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #e2e8f0; }
-        .tab-btn { @apply px-5 py-2.5 rounded-xl font-bold text-xs transition-all duration-300 flex items-center gap-2 whitespace-nowrap uppercase border border-transparent text-slate-500; }
-        .tab-btn.active { @apply bg-blue-600 text-white shadow-lg shadow-blue-200; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --wp-sidebar: #1d2327;
+            --wp-sidebar-hover: #2271b1;
+            --wp-bg: #f0f0f1;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--wp-bg);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Style */
+        .wp-sidebar {
+            width: 160px;
+            background: var(--wp-sidebar);
+            color: #f0f0f1;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .wp-brand {
+            padding: 15px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #f0f0f1;
+            transition: all 0.1s;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: #72aee6;
+        }
+
+        .nav-item.active {
+            background: var(--wp-sidebar-hover);
+            color: white;
+            border-left-color: white;
+        }
+
+        /* Main Content */
+        .wp-main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .wp-toolbar {
+            height: 32px;
+            background: #1d2327;
+            color: #c3c4c7;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 13px;
+            justify-content: space-between;
+        }
+
+        .wp-content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .workspace-card {
+            background: white;
+            border: 1px solid #c3c4c7;
+            box-shadow: 0 1px 1px rgba(0,0,0,.04);
+            height: calc(100vh - 100px);
+            position: relative;
+        }
+
         iframe { width: 100%; height: 100%; border: none; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* WP Button Style */
+        .wp-button {
+            background: #2271b1;
+            border: 1px solid #2271b1;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .wp-button:hover { background: #135e96; }
+
+        /* Custom Input WP */
+        .wp-input {
+            border: 1px solid #8c8f94;
+            padding: 6px 10px;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 14px;
+        }
+        .wp-input:focus { border-color: #2271b1; outline: 2px solid #2271b1; }
     </style>
 </head>
 <body>
 
-    <header class="glass-nav sticky top-0 z-50">
-        <div class="max-w-[1536px] mx-auto px-4 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-4">
-                    <img src="https://www.khanggiaphuc.com/data/logo.jpg" alt="Logo" class="h-12 w-auto rounded-xl">
-                    <h1 class="text-lg font-black text-slate-900 hidden sm:block">KHANG GIA PHÚC</h1>
-                </div>
-                <button id="auth-btn" class="px-4 py-2 rounded-xl bg-white border font-bold text-xs shadow-sm hover:bg-slate-50 transition">
-                    <i class="fa-brands fa-google mr-2"></i><span>Quản trị viên</span>
-                </button>
-            </div>
-            <div class="pb-3 flex overflow-x-auto gap-2 no-scrollbar">
-                <button onclick="switchTab(this, '0')" class="tab-btn active"><i class="fa-solid fa-house"></i> Trang Chủ</button>
-                <button onclick="switchTab(this, '809858153')" class="tab-btn"><i class="fa-solid fa-shield"></i> Dự án</button>
-                <button onclick="switchTab(this, '895747298')" class="tab-btn"><i class="fa-solid fa-box"></i> Sản Phẩm</button>
-                <button onclick="switchTab(this, 'drive')" class="tab-btn"><i class="fa-solid fa-folder-open"></i> Hosting - dữ liệu</button>
-                <button onclick="switchTab(this, 'github-upload')" class="tab-btn"><i class="fa-brands fa-github"></i> Upload GitHub</button>
-            </div>
+    <aside class="wp-sidebar">
+        <div class="wp-brand">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>KGP ADMIN</span>
         </div>
-    </header>
+        <nav class="mt-4">
+            <div onclick="switchTab(this, '0')" class="nav-item active">
+                <i class="fa-solid fa-house"></i> Bảng tin
+            </div>
+            <div onclick="switchTab(this, '809858153')" class="nav-item">
+                <i class="fa-solid fa-diagram-project"></i> Dự án
+            </div>
+            <div onclick="switchTab(this, '895747298')" class="nav-item">
+                <i class="fa-solid fa-cart-shopping"></i> Sản phẩm
+            </div>
+            <div onclick="switchTab(this, 'drive')" class="nav-item">
+                <i class="fa-solid fa-hdd"></i> Hosting
+            </div>
+            <div onclick="switchTab(this, 'github-upload')" class="nav-item">
+                <i class="fa-brands fa-github"></i> GitHub Sync
+            </div>
+        </nav>
+    </aside>
 
-    <main class="max-w-[1536px] mx-auto px-4 lg:px-8 py-6">
-        <div id="workspace" class="workspace-card" data-aos="fade-up">
-            <iframe id="main-frame" src="https://docs.google.com/spreadsheets/d/1knLdhA1j69Qqfa6nMIe20vfufQnvGr4THpehnK0mHPk/edit?rm=minimal&gid=0"></iframe>
+    <main class="wp-main">
+        <div class="wp-toolbar">
+            <div class="flex gap-4">
+                <span><i class="fa-solid fa-earth-americas mr-1"></i> Khang Gia Phúc</span>
+                <span><i class="fa-solid fa-rotate mr-1"></i> 0</span>
+            </div>
+            <div>Chào, Quản trị viên <i class="fa-solid fa-user-circle ml-1"></i></div>
+        </div>
+
+        <div class="wp-content">
+            <h2 id="page-title" class="text-2xl font-normal text-[#1d2327] mb-4">Bảng điều khiển</h2>
             
-            <div id="github-ui" class="hidden p-8 h-full overflow-y-auto">
-                <div class="max-w-xl mx-auto space-y-6">
-                    <div class="text-center">
-                        <i class="fa-brands fa-github text-5xl mb-4 text-slate-800"></i>
-                        <h2 class="text-2xl font-bold">Tải file lên GitHub</h2>
-                        <p class="text-sm text-slate-500">Tự động cập nhật tài nguyên vào thư mục /data</p>
+            <div id="workspace" class="workspace-card">
+                <iframe id="main-frame" src="https://docs.google.com/spreadsheets/d/1knLdhA1j69Qqfa6nMIe20vfufQnvGr4THpehnK0mHPk/edit?rm=minimal&gid=0"></iframe>
+                
+                <div id="github-ui" class="hidden p-10 bg-white h-full overflow-y-auto">
+                    <div class="max-w-2xl">
+                        <h3 class="text-xl mb-6 border-b pb-2">Tải tệp tin lên hệ thống GitHub</h3>
+                        
+                        <table class="w-full border-separate border-spacing-y-4">
+                            <tr>
+                                <td class="w-1/3 font-bold text-sm text-gray-700">GitHub Access Token</td>
+                                <td>
+                                    <input type="password" id="gh-token" class="wp-input" placeholder="ghp_xxxxxxxxxxxx">
+                                    <p class="text-xs text-gray-500 mt-1 italic">Mã định danh bảo mật từ GitHub Settings.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-sm text-gray-700">Chọn tệp tin</td>
+                                <td>
+                                    <input type="file" id="gh-file" onchange="updatePath(this)" class="text-sm">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold text-sm text-gray-700">Đường dẫn đích (mặc định)</td>
+                                <td>
+                                    <input type="text" id="gh-path" value="data/" class="wp-input bg-gray-100" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button onclick="uploadToGithub()" id="upload-btn" class="wp-button">
+                                        Lưu thay đổi và Tải lên
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div id="upload-status" class="hidden mt-6 p-4 border-l-4 bg-white shadow-sm text-sm"></div>
                     </div>
-
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 space-y-3">
-                        <label class="block text-xs font-bold text-blue-700 uppercase">Mã Personal Access Token</label>
-                        <input type="password" id="gh-token" placeholder="Nhập GitHub Token..." class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none text-sm">
-                    </div>
-
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">Chọn file từ máy tính</label>
-                            <input type="file" id="gh-file" onchange="updatePath(this)" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">Đường dẫn lưu trữ</label>
-                            <input type="text" id="gh-path" value="data/" class="w-full px-4 py-2 rounded-lg border bg-gray-50 text-sm font-mono text-slate-600" readonly>
-                        </div>
-
-                        <button onclick="uploadToGithub()" id="upload-btn" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-100">
-                            XÁC NHẬN TẢI LÊN
-                        </button>
-                    </div>
-                    
-                    <div id="upload-status" class="hidden p-4 rounded-xl text-sm font-medium text-center"></div>
                 </div>
             </div>
         </div>
@@ -86,10 +216,15 @@
         AOS.init({ duration: 800 });
         const frame = document.getElementById('main-frame');
         const githubUI = document.getElementById('github-ui');
+        const pageTitle = document.getElementById('page-title');
 
-        function switchTab(btn, target) {
-            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            btn.classList.add('active');
+        function switchTab(el, target) {
+            // Update Active Menu
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+
+            // Update Title
+            pageTitle.innerText = el.innerText.trim();
 
             if(target === 'github-upload') {
                 frame.classList.add('hidden');
@@ -105,7 +240,6 @@
             }
         }
 
-        // Tự động nối tên file vào path data/
         function updatePath(input) {
             const pathInput = document.getElementById('gh-path');
             if (input.files && input.files[0]) {
@@ -123,13 +257,13 @@
             const btn = document.getElementById('upload-btn');
 
             if(!token || !fileInput.files[0] || path === "data/") {
-                alert("Vui lòng nhập Token và chọn file!");
+                alert("Vui lòng nhập Token và chọn tệp tin!");
                 return;
             }
 
             status.classList.remove('hidden');
-            status.className = "p-4 rounded-xl text-sm font-medium text-center bg-blue-50 text-blue-600 animate-pulse";
-            status.innerText = "Đang xử lý dữ liệu...";
+            status.className = "mt-6 p-4 border-l-4 border-blue-500 bg-white shadow-sm text-sm text-blue-600";
+            status.innerText = "Đang xử lý tải lên...";
             btn.disabled = true;
 
             const file = fileInput.files[0];
@@ -140,7 +274,6 @@
                 const repo = "Tconghanh/khanggiaphuc.com"; 
 
                 try {
-                    // Kiểm tra SHA để hỗ trợ ghi đè file cũ
                     let sha = "";
                     const checkRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
                         headers: { 'Authorization': `token ${token}` }
@@ -158,22 +291,22 @@
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            message: `Admin upload: ${path}`,
+                            message: `WP-Admin Upload: ${path}`,
                             content: content,
                             sha: sha
                         })
                     });
 
                     if(response.ok) {
-                        status.className = "p-4 rounded-xl text-sm font-medium text-center bg-green-100 text-green-700 border border-green-200";
-                        status.innerHTML = `<i class="fa-solid fa-check-circle mr-2"></i> Tải lên thành công! File lưu tại: ${path}`;
+                        status.className = "mt-6 p-4 border-l-4 border-green-500 bg-white shadow-sm text-sm text-green-700";
+                        status.innerHTML = `<strong>Thành công!</strong> Tệp tin đã được cập nhật tại thư mục /data.`;
                     } else {
                         const err = await response.json();
                         throw new Error(err.message);
                     }
                 } catch (e) {
-                    status.className = "p-4 rounded-xl text-sm font-medium text-center bg-red-100 text-red-700 border border-red-200";
-                    status.innerText = "Lỗi: " + e.message;
+                    status.className = "mt-6 p-4 border-l-4 border-red-500 bg-white shadow-sm text-sm text-red-700";
+                    status.innerText = "Lỗi hệ thống: " + e.message;
                 } finally {
                     btn.disabled = false;
                 }
