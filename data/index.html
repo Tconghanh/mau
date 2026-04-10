@@ -120,7 +120,7 @@
             
             reader.onload = async function() {
                 const content = reader.result.split(',')[1]; // Lấy base64
-                const repo = "Tên_Tài_Khoản_Github/Tên_Repo"; // <--- THAY ĐỔI Ở ĐÂY (VD: khanggiaphuc/website)
+                const repo = "Tconghanh/mau"; // <--- THAY ĐỔI Ở ĐÂY (VD: khanggiaphuc/website)
 
                 try {
                     const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
