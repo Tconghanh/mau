@@ -36,7 +36,7 @@
                 <button onclick="switchTab(this, '0')" class="tab-btn active"><i class="fa-solid fa-house"></i> Trang Chủ</button>
                 <button onclick="switchTab(this, '620957187')" class="tab-btn"><i class="fa-solid fa-shield"></i> Bảo Hành</button>
                 <button onclick="switchTab(this, '895747298')" class="tab-btn"><i class="fa-solid fa-box"></i> Sản Phẩm</button>
-                <button onclick="switchTab(this, 'drive')" class="tab-btn"><i class="fa-solid fa-folder-open"></i> Kho Drive</button>
+                <button onclick="switchTab(this, 'drive')" class="tab-btn"><i class="fa-solid fa-folder-open"></i> Hosting - dữ liệu</button>
                 <button onclick="switchTab(this, 'github-upload')" class="tab-btn"><i class="fa-brands fa-github"></i> Upload GitHub</button>
             </div>
         </div>
@@ -45,7 +45,7 @@
     <!-- Workspace -->
     <main class="max-w-[1536px] mx-auto px-4 lg:px-8 py-6">
         <div id="workspace" class="workspace-card" data-aos="fade-up">
-            <iframe id="main-frame" src="https://docs.google.com/spreadsheets/d/18ce9-AdNPMv_CPKCKQqRD4k0jTw1Hv-xZLF_Q4ZaubE/edit?rm=minimal&gid=0"></iframe>
+            <iframe id="main-frame" src="https://docs.google.com/spreadsheets/d/1knLdhA1j69Qqfa6nMIe20vfufQnvGr4THpehnK0mHPk/edit?rm=minimal&gid=0"></iframe>
             
             <!-- GitHub Upload UI (Hidden by default) -->
             <div id="github-ui" class="hidden p-8 h-full overflow-y-auto">
@@ -53,11 +53,11 @@
                     <div class="text-center">
                         <i class="fa-brands fa-github text-5xl mb-4 text-slate-800"></i>
                         <h2 class="text-2xl font-bold">Tải file lên GitHub</h2>
-                        <p class="text-sm text-slate-500">Cập nhật tài nguyên trực tiếp cho website ht25vn.com</p>
+                        <p class="text-sm text-slate-500">Cập nhật tài nguyên trực tiếp cho website Khanggiaphuc.com</p>
                     </div>
 
                     <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 space-y-3">
-                        <label class="block text-xs font-bold text-blue-700">GITHUB TOKEN (Lưu nội bộ)</label>
+                        <label class="block text-xs font-bold text-blue-700">Mã upload (Được cung cấp qua email)</label>
                         <input type="password" id="gh-token" placeholder="Nhập Personal Access Token..." class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-500 outline-none text-sm">
                         <p class="text-[10px] text-blue-600 italic">* Token này không được lưu vào code, chỉ lưu trong trình duyệt của bạn.</p>
                     </div>
@@ -91,9 +91,9 @@
                 frame.classList.remove('hidden');
                 githubUI.classList.add('hidden');
                 if(target === 'drive') {
-                    frame.src = "https://drive.google.com/embeddedfolderview?id=1dn5E5YMSmYHoq1IEJ9l84oVQeLaOJvFM#grid";
+                    frame.src = "https://drive.google.com/embeddedfolderview?id=1-icx6ejwaG2GbGobqSErVyDsNi6YmDCh#grid";
                 } else {
-                    frame.src = `https://docs.google.com/spreadsheets/d/18ce9-AdNPMv_CPKCKQqRD4k0jTw1Hv-xZLF_Q4ZaubE/edit?rm=minimal&gid=${target}`;
+                    frame.src = `https://docs.google.com/spreadsheets/d/1knLdhA1j69Qqfa6nMIe20vfufQnvGr4THpehnK0mHPk/edit?rm=minimal&gid=${target}`;
                 }
             }
         }
@@ -120,7 +120,7 @@
             
             reader.onload = async function() {
                 const content = reader.result.split(',')[1]; // Lấy base64
-                const repo = "Tên_Tài_Khoản_Github/Tên_Repo"; // <--- THAY ĐỔI Ở ĐÂY (VD: khanggiaphuc/website)
+                const repo = "Tconghanh/khanggiaphuc.com"; // <--- THAY ĐỔI Ở ĐÂY
 
                 try {
                     const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
